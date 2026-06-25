@@ -1,0 +1,98 @@
+---
+title: "Server Components in Next.js App Router"
+sidebarTitle: "Server Components"
+description: "Learn how Server Components render on the server, shrink your JavaScript bundle, and give you direct access to databases and APIs."
+---
+
+Server Components are the default component type in the Next.js App Router. They render entirely on the server — Next.js turns them into HTML and streams that HTML to the browser, but the component's JavaScript code is **never sent to the client**. This is a fundamentally different model from traditional React, and it unlocks some powerful patterns you couldn't achieve before.
+
+## How They Work
+
+Every file inside the `app/` directory is a Server Component unless you explicitly opt out. You don't need to add any special import or decorator — if there's no `'use client'` directive at the top of your file, it's a Server Component.
+
+```tsx
+// app/page.tsx — this is a Server Component by default
+export default function HomePage() {
+  return <h1>Hello, world!</h1>
+}
+```
+
+Because Server Components never run in the browser, React doesn't ship their code as part of your JavaScript bundle. A complex data-fetching component that imports a large database library adds zero bytes to what your users download.
+
+## What You Can Do in Server Components
+
+Server Components have capabilities that Client Components simply don't have access to, because they run in a trusted server environment.
+
+<CardGroup cols={2}>
+  <Card title="async / await" icon="clock">
+    Mark any Server Component as `async` and use `await` directly inside it. Fetch from APIs, query databases, read files — all without useEffect or loading states.
+  </Card>
+  <Card title="Environment Variables" icon="lock">
+    Access `process.env.SECRET_KEY` and other server-side environment variables safely. These values are never exposed to the browser.
+  </Card>
+  <Card title="Direct Database Access" icon="database">
+    Import your database client (Prisma, Drizzle, raw SQL) and run queries straight from the component. No need for a separate API layer just to load a page.
+  </Card>
+  <Card title="Server-Only Packages" icon="server">
+    Use Node.js APIs and heavy server-side libraries freely. They stay on the server and are excluded from the client bundle automatically.
+  </Card>
+</CardGroup>
+
+### Direct Database Access Example
+
+Here's the pattern that makes Server Components so compelling: you can query your database directly inside the component that needs the data, with no API route in between.
+
+```tsx
+// app/dashboard/page.tsx
+import { db } from '@/lib/db'  // direct database access
+
+export default async function DashboardPage() {
+  const user = await db.user.findFirst()
+  return (
+    <div>
+      <h1>Welcome, {user?.name}</h1>
+    </div>
+  )
+}
+```
+
+The `db` import, the database query, and the credentials in your environment variables all stay on the server. The browser only receives the rendered `<div>` with the user's name already filled in.
+
+## What You Cannot Do in Server Components
+
+Because Server Components never run in the browser, anything that requires a browser environment is off-limits.
+
+<Warning>
+  The following will cause a build error or runtime crash if used inside a Server Component:
+
+  - `useState` and `useReducer` — no client-side state
+  - `useEffect` and `useLayoutEffect` — no lifecycle hooks
+  - `onClick`, `onChange`, and other event handlers
+  - Browser APIs like `window`, `document`, or `localStorage`
+  - Context providers that rely on client state
+
+  If your component needs any of these, add `'use client'` at the top of the file to make it a Client Component.
+</Warning>
+
+## Server vs Client — How to Decide
+
+<Note>
+  A good rule of thumb: **start with a Server Component and only switch to a Client Component when you need interactivity or browser APIs**. Most of your UI — layouts, data display, typography, navigation — can stay on the server. Only the parts that respond to user input (forms, dropdowns, modals, counters) need to be Client Components.
+
+  This keeps your JavaScript bundle small and your pages fast.
+</Note>
+
+| Requirement | Use |
+|---|---|
+| Fetch data from a database or API | Server Component |
+| Access environment variables | Server Component |
+| Display static or server-rendered UI | Server Component |
+| Handle user clicks or form input | Client Component |
+| Use `useState` or `useEffect` | Client Component |
+| Access `window` or `localStorage` | Client Component |
+
+## What's Next
+
+<Card title="Client Components" icon="display" href="core-features/client-components">
+  Learn when and how to use Client Components to add interactivity to your app — and how to compose them inside Server Components.
+</Card>

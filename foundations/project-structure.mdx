@@ -1,0 +1,107 @@
+---
+title: "Understanding Your Next.js Project Structure"
+sidebarTitle: "Project Structure"
+description: "Learn what every file and folder in a new Next.js project does, and why the app/ directory is the heart of the App Router."
+---
+
+When you run `create-next-app`, Next.js scaffolds a project with a carefully chosen set of files and folders. Each piece has a specific purpose, and understanding the layout from the start will save you a lot of confusion as your project grows.
+
+## The Default Directory Tree
+
+Here is what a freshly generated project looks like:
+
+```
+my-first-app/
+├── app/
+│   ├── layout.tsx       # Root layout
+│   ├── page.tsx         # Home page (/)
+│   └── globals.css      # Global styles
+├── public/              # Static assets
+├── next.config.js       # Next.js configuration
+├── package.json         # Dependencies
+├── tsconfig.json        # TypeScript config
+└── tailwind.config.ts   # Tailwind config
+```
+
+Every file here was placed intentionally. Let's walk through what each one does.
+
+## Key Files and Folders
+
+### The `app/` Folder
+
+The `app/` directory is the core of the **App Router** — Next.js's modern routing system introduced in version 13. Every file you place inside `app/` can become part of your site's URL structure. Think of it as your pages folder, your layout system, and your routing engine all rolled into one.
+
+<Note>
+  The App Router replaces the older `pages/` directory. If you see tutorials using `pages/index.tsx`, they are using the legacy Pages Router. This course uses the App Router exclusively.
+</Note>
+
+Inside `app/` you'll find three files to start:
+
+| File | Purpose |
+|---|---|
+| `layout.tsx` | The root layout that wraps every page in your app |
+| `page.tsx` | The home page, served at the `/` route |
+| `globals.css` | Global CSS styles applied across your entire app |
+
+### The `public/` Folder
+
+The `public/` directory holds **static assets** — things like images, fonts, icons, and `robots.txt`. Files in this folder are served directly by Next.js at the root of your domain. For example, `public/logo.png` becomes accessible at `https://yoursite.com/logo.png`.
+
+```
+public/
+├── logo.png        →  yoursite.com/logo.png
+└── favicon.ico     →  yoursite.com/favicon.ico
+```
+
+### `next.config.js`
+
+This file lets you **customize Next.js behavior**. You can configure things like redirects, environment variables, image domains, and experimental features. You won't need to touch it often when starting out, but it's good to know it's there.
+
+```javascript
+// next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {}
+
+module.exports = nextConfig
+```
+
+### `package.json`
+
+Your project's **dependency manifest**. It lists all the npm packages your app relies on, as well as the scripts you can run — like `npm run dev` to start the development server.
+
+### `tsconfig.json`
+
+The **TypeScript configuration** file. Next.js ships with TypeScript support out of the box, and this file tells the TypeScript compiler how to handle your code. One important setting it includes is the `@/` path alias, which lets you import files relative to your project root instead of writing long relative paths like `../../components/Button`.
+
+### `tailwind.config.ts`
+
+The **Tailwind CSS configuration** file. It tells Tailwind which files to scan for class names so it can remove unused styles in production. You can also extend Tailwind's default theme here — custom colors, fonts, spacing, and more.
+
+## How It All Fits Together
+
+<CardGroup cols={2}>
+  <Card title="app/" icon="folder-open">
+    Your routes, layouts, and pages live here. The App Router turns this folder into your entire navigation system.
+  </Card>
+  <Card title="public/" icon="image">
+    Static files served as-is. Drop an image here and reference it anywhere in your app.
+  </Card>
+  <Card title="next.config.js" icon="gear">
+    The control panel for Next.js. Tweak build behavior, set up redirects, and enable experimental features.
+  </Card>
+  <Card title="tsconfig.json" icon="code">
+    TypeScript settings including the handy `@/` import alias that keeps your imports clean.
+  </Card>
+</CardGroup>
+
+<Tip>
+  You can keep the default configuration for all of these files when you're just starting out. Focus your energy on the `app/` folder — that's where everything interesting happens.
+</Tip>
+
+## What's Next
+
+Now that you understand how your project is organized, it's time to learn how the `app/` folder turns files into real URL routes.
+
+<Card title="Pages & Routing" icon="arrow-right" href="foundations/pages-routing">
+  Learn how Next.js uses the file system as your router and how to create new pages.
+</Card>

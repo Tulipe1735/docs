@@ -1,0 +1,100 @@
+---
+title: "How to Follow This Next.js Course Effectively"
+sidebarTitle: "How to Follow"
+description: "Learn how to use the handbook alongside video lessons, adjust your pace, work with code examples, and use AI tools to accelerate your learning."
+---
+
+This course combines two complementary resources: **video lessons** and this **written handbook**. Understanding how they fit together will help you get the most out of every hour you spend learning.
+
+## Handbook and Video: Better Together
+
+The videos walk you through concepts live — you see real code being written, errors being made, and problems being solved. The handbook serves as your permanent reference. It summarises key ideas, provides clean code examples, and stays updated as Next.js evolves.
+
+A good rhythm is to **watch the video first**, then return to the handbook to review the concepts, copy a code snippet, or check something you missed. You do not need to read every word on every page before watching — treat the handbook as a resource you pull from, not a textbook you read cover to cover.
+
+## Adjusting Your Pace
+
+Every learner moves differently. Here is how to handle the two most common situations:
+
+**If things are moving too fast:**
+
+- Pause the video and re-read the relevant handbook section at your own speed.
+- Try typing the code yourself before watching the solution — even if you get it wrong, the attempt helps it stick.
+- Use an AI assistant (see below) to get a plain-language explanation of anything confusing.
+- Do not skip ahead hoping it will make sense later. Next.js concepts build on each other, so it pays to get comfortable with each layer before adding the next.
+
+**If things are moving too slowly:**
+
+- Use the sidebar to jump directly to the sections most relevant to your goal.
+- Skim the handbook pages for a concept first — if it already makes sense, skip the video and move on.
+- The code examples are self-contained enough that you can often read them, run them, and continue without watching the full lesson.
+
+## About the Code Examples
+
+Code examples in this course follow a deliberate progression: they **start simple and build in complexity**. Early examples strip away everything non-essential so you can focus on one concept at a time. Later examples layer in real-world concerns like error handling, loading states, and TypeScript types.
+
+<Info>
+  You do not need to understand every single line of a code example before moving forward. Focus on the parts that are highlighted or discussed, and trust that the surrounding code will become familiar as you see it repeated across examples.
+</Info>
+
+When you see a code block like this one, copy it into your own project and run it:
+
+```tsx
+// app/page.tsx
+export default function HomePage() {
+  return (
+    <main>
+      <h1>Hello, Next.js!</h1>
+    </main>
+  );
+}
+```
+
+Reading code is useful. Running code is essential. Modifying code and seeing what breaks is where real learning happens.
+
+## Using AI to Learn Faster
+
+AI assistants like ChatGPT, Claude, and GitHub Copilot are legitimate learning tools — not shortcuts that bypass understanding. Used well, they act like a patient tutor available at any hour.
+
+Here are prompts that work especially well when learning Next.js:
+
+```text
+Explain this Next.js code to me like I'm a beginner: [paste your code here]
+```
+
+```text
+I got this error in my Next.js app. What does it mean and how do I fix it?
+[paste the full error message]
+```
+
+```text
+Show me 3 different ways to solve this in Next.js and explain the trade-offs:
+[describe what you are trying to do]
+```
+
+```text
+What is the difference between a Server Component and a Client Component
+in Next.js? Give me a simple example of each.
+```
+
+<Tip>
+  Always paste your actual code or error message into the prompt. Vague questions get vague answers. Specific questions get specific, actionable answers.
+</Tip>
+
+## Keeping Up With Next.js Updates
+
+Next.js moves fast. New versions bring new features, deprecations, and occasionally breaking changes. This handbook is kept up to date with the latest stable release.
+
+If something in a video looks different from what you see in your project — a file name, a function signature, a configuration option — **check this handbook first**. The written content reflects current best practices even when older videos have not been re-recorded yet.
+
+<Note>
+  Always check the version number at the top of the official Next.js docs if you are debugging something that feels off. A small version difference can sometimes explain a lot.
+</Note>
+
+## What's Next
+
+<CardGroup cols={2}>
+  <Card title="Why Next.js?" icon="bolt" href="/introduction/why-nextjs">
+    Understand why Next.js has become the dominant React framework and what it offers over plain React.
+  </Card>
+</CardGroup>

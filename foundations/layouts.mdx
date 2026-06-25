@@ -1,0 +1,190 @@
+---
+title: "Layouts: Shared UI Across Pages in Next.js"
+sidebarTitle: "Layouts"
+description: "Learn how Next.js layouts let you wrap multiple pages in shared UI like navbars and footers without repeating code on every single page."
+---
+
+Imagine having to copy and paste your navbar and footer into every single page of your app. Every time you change a nav link, you'd have to update a dozen files. Layouts solve this problem. A **layout** is a component that wraps one or more pages, providing shared UI that persists across navigation — without re-rendering between route changes.
+
+## The Root Layout
+
+Every Next.js App Router project has exactly one required file: `app/layout.tsx`. This is the **root layout**, and it wraps every single page in your application. When Next.js renders any route, it starts here.
+
+Here's the default root layout that `create-next-app` generates:
+
+```tsx
+// app/layout.tsx
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
+
+const inter = Inter({ subsets: ['latin'] })
+
+export const metadata: Metadata = {
+  title: 'My App',
+  description: 'Built with Next.js',
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en">
+      <body className={inter.className}>{children}</body>
+    </html>
+  )
+}
+```
+
+Let's break down what each part does:
+
+| Part | Purpose |
+|---|---|
+| `import { Inter } from 'next/font/google'` | Loads the Inter font from Google Fonts, optimized automatically by Next.js |
+| `const inter = Inter({ subsets: ['latin'] })` | Configures which character subsets to include |
+| `export const metadata` | Sets the default `<title>` and `<meta description>` for your app |
+| `children: React.ReactNode` | The current page being rendered — Next.js injects this automatically |
+| `<html lang="en">` | The root HTML element — only the root layout can include `<html>` and `<body>` |
+| `{children}` | Where your page content appears inside the layout |
+
+<Note>
+  The `children` prop is the key to how layouts work. Next.js passes the currently active page as `children` to the layout. Your layout renders once; only the `children` content changes as you navigate between pages.
+</Note>
+
+## Adding a Navbar to the Layout
+
+The most common use of the root layout is adding a **persistent navbar** that appears on every page. Import your `Navbar` component and place it above `{children}`:
+
+```tsx
+// app/layout.tsx
+import { Navbar } from '@/components/Navbar'
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en">
+      <body>
+        <Navbar />
+        <main>{children}</main>
+      </body>
+    </html>
+  )
+}
+```
+
+Now your navbar will appear on every page — the home page, the about page, the blog page — automatically. When you update `Navbar.tsx`, every page reflects the change instantly.
+
+<Tip>
+  Wrap `{children}` in a `<main>` element for good accessibility and semantic HTML. If you add a footer, place it after `</main>` so the landmark structure of your page is clear to screen readers.
+</Tip>
+
+Adding a footer follows exactly the same pattern:
+
+```tsx
+import { Navbar } from '@/components/Navbar'
+import { Footer } from '@/components/Footer'
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        <Navbar />
+        <main>{children}</main>
+        <Footer />
+      </body>
+    </html>
+  )
+}
+```
+
+## Nested Layouts
+
+The root layout applies to your entire app — but what if only one section of your app needs a special layout? For example, your `/dashboard` pages might need a sidebar that your marketing pages don't.
+
+Next.js supports **nested layouts**. Simply add a `layout.tsx` file inside any subfolder inside `app/`, and it will wrap only the routes within that folder:
+
+```
+app/
+├── layout.tsx              # Root layout — wraps everything
+├── page.tsx                # Home page
+├── about/
+│   └── page.tsx            # Uses root layout only
+└── dashboard/
+    ├── layout.tsx          # Dashboard layout — wraps /dashboard/*
+    ├── page.tsx            # /dashboard
+    └── settings/
+        └── page.tsx        # /dashboard/settings
+```
+
+```tsx
+// app/dashboard/layout.tsx
+import { Sidebar } from '@/components/Sidebar'
+
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <div className="flex">
+      <Sidebar />
+      <section className="flex-1 p-8">{children}</section>
+    </div>
+  )
+}
+```
+
+<Info>
+  Nested layouts **stack** — they don't replace the root layout. When a user visits `/dashboard`, Next.js renders the root layout, then the dashboard layout inside it, then the page inside that. Each layer wraps the next.
+</Info>
+
+## How Layouts and Pages Work Together
+
+Here's a visual summary of how the pieces compose:
+
+<Steps>
+  <Step title="Root layout renders">
+    `app/layout.tsx` runs first. It renders the `<html>`, `<body>`, your `<Navbar>`, and a placeholder for `children`.
+  </Step>
+  <Step title="Nested layout renders (if any)">
+    If the current route has a `layout.tsx` in its folder, that layout renders next — inside the root layout's `children` slot.
+  </Step>
+  <Step title="Page renders">
+    Finally, the `page.tsx` for the current route renders inside the innermost layout's `children` slot.
+  </Step>
+</Steps>
+
+## The `metadata` Export
+
+Any `layout.tsx` (or `page.tsx`) can export a `metadata` object to set SEO-relevant tags. The root layout sets the defaults; individual pages can override them.
+
+```tsx
+// app/about/page.tsx
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'About Us — My App',
+  description: 'Learn more about our team and mission.',
+}
+
+export default function AboutPage() {
+  return <main><h1>About Us</h1></main>
+}
+```
+
+<Warning>
+  Never include `<html>`, `<head>`, or `<body>` tags inside a nested layout or a page component. Only the root `app/layout.tsx` should have those. Next.js manages the document structure for you everywhere else.
+</Warning>
+
+## What's Next
+
+You now understand the full foundation of a Next.js application — project structure, routing, components, styling, and layouts. It's time to move into the core features: fetching real data to power your pages.
+
+<Card title="Data Fetching" icon="arrow-right" href="core-features/data-fetching">
+  Learn how to fetch data in Next.js using Server Components, async/await, and the fetch API.
+</Card>

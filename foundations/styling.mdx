@@ -1,0 +1,151 @@
+---
+title: "Styling Your Next.js App: Three Approaches"
+sidebarTitle: "Styling"
+description: "Explore the three main ways to style a Next.js app — Tailwind CSS, CSS Modules, and global CSS — and learn when to reach for each one."
+---
+
+Next.js doesn't force you into a single styling approach. You can use utility classes, scoped stylesheets, or plain global CSS — and you can mix them in the same project. That said, `create-next-app` sets up **Tailwind CSS** by default, and for good reason: it's fast to write, easy to maintain, and scales well as your app grows. This page walks through all three options so you know exactly what's available to you.
+
+## Option 1: Tailwind CSS (Recommended)
+
+Tailwind is a **utility-first CSS framework**. Instead of writing separate CSS files, you apply small, single-purpose classes directly in your JSX. Each class does one thing — `p-6` adds padding, `rounded-lg` rounds the corners, `shadow-md` adds a drop shadow.
+
+```tsx
+// app/page.tsx
+export default function Card() {
+  return (
+    <div className="p-6 bg-white rounded-lg shadow-md">
+      <h2 className="text-xl font-bold text-gray-800">My Card</h2>
+      <p className="text-gray-600 mt-2">Card content goes here.</p>
+    </div>
+  )
+}
+```
+
+You write styles right where you write your markup, so you never have to switch between files or worry about naming CSS classes. Tailwind's build process also automatically removes any classes you don't use, keeping your final CSS bundle very small.
+
+<Tip>
+  For new projects, Tailwind CSS is the fastest path from idea to styled UI. The utility classes are well-documented at [tailwindcss.com](https://tailwindcss.com/docs) and have predictable, composable behavior. Stick with Tailwind unless you have a specific reason to do otherwise.
+</Tip>
+
+### Common Tailwind Utilities
+
+| Category | Example Classes | What They Do |
+|---|---|---|
+| Spacing | `p-4`, `px-6`, `mt-2`, `mb-8` | Padding and margin |
+| Typography | `text-xl`, `font-bold`, `text-gray-600` | Font size, weight, color |
+| Layout | `flex`, `grid`, `items-center`, `gap-4` | Flexbox and grid |
+| Background | `bg-white`, `bg-blue-500` | Background colors |
+| Borders | `rounded-lg`, `border`, `border-gray-200` | Border radius and color |
+| Shadows | `shadow-sm`, `shadow-md`, `shadow-lg` | Drop shadows |
+
+## Option 2: CSS Modules
+
+CSS Modules let you write **scoped CSS** — styles that only apply to the component that imports them. Next.js supports CSS Modules out of the box for any file ending in `.module.css`.
+
+First, create your styles in a `.module.css` file:
+
+```css
+/* components/Button.module.css */
+.button {
+  padding: 0.5rem 1rem;
+  background-color: #47ca75;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.button:hover {
+  background-color: #38b265;
+}
+```
+
+Then import the styles and apply them using the `styles` object:
+
+```tsx
+// components/Button.tsx
+import styles from './Button.module.css'
+
+export function Button({ label }: { label: string }) {
+  return <button className={styles.button}>{label}</button>
+}
+```
+
+Next.js automatically generates a **unique class name** for `.button` at build time (something like `Button_button__xK2p1`). This means your `.button` style can never accidentally clash with a `.button` class defined in a completely different component.
+
+<Info>
+  CSS Modules are a great choice when you're working with a design system that already has written CSS, when you're migrating from a traditional CSS setup, or when your team is more comfortable writing standard CSS than Tailwind utilities.
+</Info>
+
+### Combining Multiple Classes
+
+You can combine multiple CSS Module classes using template literals or the popular `clsx` library:
+
+```tsx
+import styles from './Button.module.css'
+
+export function Button({ label, variant }: { label: string; variant: 'primary' | 'danger' }) {
+  return (
+    <button className={`${styles.button} ${styles[variant]}`}>
+      {label}
+    </button>
+  )
+}
+```
+
+## Option 3: Global CSS
+
+Global CSS lives in `app/globals.css` and applies styles **across your entire application**. Next.js imports this file automatically through your root layout.
+
+```css
+/* app/globals.css */
+
+/* CSS reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Base body styles */
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+/* Custom CSS variables */
+:root {
+  --color-primary: #4f46e5;
+  --color-text: #1f2937;
+}
+```
+
+<Warning>
+  Use global CSS sparingly. Because global styles affect every element on every page, it's easy to introduce unintended side effects as your project grows. Stick to CSS resets, base font settings, and CSS custom properties (variables) in `globals.css`. For everything else, prefer Tailwind or CSS Modules.
+</Warning>
+
+## Choosing the Right Approach
+
+<CardGroup cols={3}>
+  <Card title="Tailwind CSS" icon="wind">
+    Best for new projects. Fast to write, no context switching, tiny production bundle. The default choice with `create-next-app`.
+  </Card>
+  <Card title="CSS Modules" icon="file-css">
+    Best when you want scoped, standard CSS. Pairs well with existing design systems or teams familiar with traditional CSS workflows.
+  </Card>
+  <Card title="Global CSS" icon="globe">
+    Best for app-wide resets and CSS variables. Keep it minimal — too many global styles lead to hard-to-debug conflicts.
+  </Card>
+</CardGroup>
+
+You can use all three approaches in the same project. A common pattern is to use Tailwind for component styling, CSS Modules for complex one-off components that need intricate styles, and `globals.css` for your base reset.
+
+## What's Next
+
+With your components styled, it's time to learn how **layouts** let you share a consistent UI — like a navbar and footer — across every page of your app without repeating yourself.
+
+<Card title="Layouts" icon="arrow-right" href="foundations/layouts">
+  Learn how Next.js layouts wrap your pages in shared UI like navigation bars and footers.
+</Card>

@@ -1,0 +1,96 @@
+---
+title: "What to Build Next: Next.js Project Ideas by Skill Level"
+sidebarTitle: What to Build
+description: Find your next Next.js project. Explore beginner, intermediate, and advanced app ideas plus the key topics to study as you grow beyond this course.
+---
+
+Finishing a course is a milestone — but the real learning happens when you start building on your own. Now that you understand the App Router, Server Components, data fetching, and deployment, you have everything you need to bring a real project to life. The hardest part is picking where to start.
+
+Here are project ideas organized by difficulty, followed by the key topics worth exploring as you level up.
+
+## Project Ideas
+
+### 🟢 Beginner Projects
+
+These projects use the core skills from this course without requiring new tools or services. They're perfect for reinforcing what you already know.
+
+<Steps>
+  <Step title="Personal Portfolio Site">
+    Build a multi-page portfolio with routes for Home, About, and Projects. Practice layouts, static content, and the `next/image` component to display your work. Deploy it to Vercel and share the URL with the world.
+  </Step>
+  <Step title="Blog with Dynamic Routes">
+    Create a blog using dynamic route segments (`[slug]`) to render individual posts. Write your posts in Markdown files and parse them at build time. This reinforces file-based routing and static data fetching in a very practical way.
+  </Step>
+  <Step title="Todo App">
+    Build a classic todo app with the ability to add, complete, and delete tasks. Start by persisting data to `localStorage` from a Client Component, then challenge yourself to replace that with a simple API route backend using Route Handlers.
+  </Step>
+</Steps>
+
+### 🟡 Intermediate Projects
+
+These projects introduce external services — a database, a third-party API, or a small payment flow. You'll need to read new documentation and solve problems you haven't seen before. That's the point.
+
+<Steps>
+  <Step title="Recipe App with a Database">
+    Build a recipe browser backed by a real database. Use [Supabase](https://supabase.com) (PostgreSQL with a generous free tier) to store recipes and fetch them in your Server Components. Add a form for submitting new recipes using a Server Action.
+  </Step>
+  <Step title="Weather App">
+    Integrate a public weather API such as [Open-Meteo](https://open-meteo.com) (free, no API key required) or [OpenWeatherMap](https://openweathermap.org/api). Let users search by city, display the current forecast, and handle loading and error states gracefully.
+  </Step>
+  <Step title="E-Commerce Storefront">
+    Create a product listing page with dynamic product detail routes. Build a shopping cart using React context or Zustand. You don't need real payments — focus on the UI, routing, and state management patterns used in real storefronts.
+  </Step>
+</Steps>
+
+### 🔴 Advanced Projects
+
+These projects combine multiple systems — auth, real-time data, or AI APIs — and push you toward production-level architecture. Take your time with these.
+
+<Steps>
+  <Step title="Full-Stack SaaS App with Authentication">
+    Build a small SaaS application (a bookmark manager, note-taking tool, or habit tracker) with user accounts powered by [NextAuth.js](https://next-auth.js.org) or [Clerk](https://clerk.com). Add a database so each user sees only their own data. This is the closest thing to a real production app.
+  </Step>
+  <Step title="Real-Time Chat Application">
+    Create a chat room using WebSockets via [Pusher](https://pusher.com) or [Ably](https://ably.com). You'll learn how real-time features fit into a Next.js architecture and where the boundaries between the server and client become important.
+  </Step>
+  <Step title="AI-Powered Tool">
+    Build something on top of the [OpenAI API](https://platform.openai.com/docs) — a writing assistant, a code explainer, or a recipe generator. Stream responses using the Vercel AI SDK and Route Handlers to give users a fast, responsive experience.
+  </Step>
+</Steps>
+
+## Topics to Explore Next
+
+As your projects grow, you'll naturally reach the edges of what this course covered. Here are the most valuable areas to explore next:
+
+<CardGroup cols={2}>
+  <Card title="Authentication" icon="lock">
+    **NextAuth.js** is the most popular open-source auth solution for Next.js. **Clerk** offers a hosted alternative with a great developer experience and a free tier. Both work seamlessly with the App Router.
+  </Card>
+  <Card title="Databases" icon="database">
+    **Prisma** is a type-safe ORM that pairs well with PostgreSQL. **Supabase** adds a full Postgres database, auth, and storage with a clean dashboard. **PlanetScale** offers a serverless MySQL platform with branching workflows.
+  </Card>
+  <Card title="State Management" icon="arrows-spin">
+    For client-side global state, **Zustand** is lightweight and beginner-friendly. **Jotai** takes an atomic approach to state. For most Next.js apps, Server Components reduce how much client state you need in the first place.
+  </Card>
+  <Card title="Testing" icon="flask">
+    **Jest** handles unit and integration tests for your functions and components. **Playwright** handles end-to-end browser testing — it can simulate a real user navigating your app and is excellent for catching regressions before deploy.
+  </Card>
+  <Card title="Animations" icon="wand-magic-sparkles">
+    **Framer Motion** is the go-to animation library for React. It integrates cleanly with Next.js Client Components and lets you add page transitions, hover effects, and gesture-driven interactions with minimal code.
+  </Card>
+  <Card title="CMS & Content" icon="pencil">
+    For content-heavy sites, consider **Contentlayer** (local MDX files with type safety), **Sanity** (a flexible hosted CMS), or **Contentful** (a mature enterprise-ready option). All three have Next.js integration guides.
+  </Card>
+</CardGroup>
+
+<Info>
+  You don't need to learn all of these at once. Pick the one most relevant to your next project, go deep on it, and move on. Focused learning beats scattered browsing every time.
+</Info>
+
+## Back to the Beginning
+
+Want to revisit the fundamentals or walk a friend through the course from scratch?
+
+<Card title="Back to the Welcome Page" icon="house" href="introduction/welcome">
+  Return to the start of the course to review core concepts or share it with someone who's just beginning their Next.js journey.
+</Card>

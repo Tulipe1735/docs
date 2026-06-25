@@ -1,0 +1,127 @@
+---
+title: "Error Handling & 404 Pages in Next.js"
+sidebarTitle: "Error Handling"
+description: "Use error.tsx to catch runtime errors gracefully, create custom 404 pages with not-found.tsx, and trigger them programmatically with the notFound() function."
+---
+
+Things go wrong in every application — a database query fails, an API is down, or a user navigates to a page that doesn't exist. Next.js gives you a file-based system for handling these situations gracefully, so users always see a helpful UI rather than a raw browser error screen.
+
+## The `error.tsx` File
+
+Create an `error.tsx` file inside any route segment to catch runtime errors thrown by that segment's page or its children. Next.js automatically wraps the page in a React error boundary — if anything throws, `error.tsx` renders instead.
+
+```tsx
+'use client'  // Error components must be Client Components
+
+export default function Error({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string }
+  reset: () => void
+}) {
+  return (
+    <div>
+      <h2>Something went wrong!</h2>
+      <p>{error.message}</p>
+      <button onClick={() => reset()}>Try again</button>
+    </div>
+  )
+}
+```
+
+<Note>
+  Error components **must** be Client Components (marked with `'use client'`). This is because they need to use the `reset` function, which triggers a React re-render to attempt recovering from the error.
+</Note>
+
+The `reset` prop is a function that tells Next.js to try rendering the page again — useful when the error was temporary, like a flaky network request.
+
+## Where to Place `error.tsx`
+
+The location of your `error.tsx` file controls which parts of the app it protects:
+
+<CardGroup cols={2}>
+  <Card title="app/error.tsx" icon="shield">
+    Catches errors from **all pages** in your entire app. Acts as a global safety net.
+  </Card>
+  <Card title="app/dashboard/error.tsx" icon="folder">
+    Only catches errors from pages inside the `dashboard` segment — other routes are unaffected.
+  </Card>
+</CardGroup>
+
+<Tip>
+  Place a global `app/error.tsx` as a fallback, then add more specific ones in segments where you want tailored error messages. The most specific `error.tsx` wins.
+</Tip>
+
+## The `not-found.tsx` File
+
+A 404 is a special kind of error that deserves its own page. Create `app/not-found.tsx` to replace the default Next.js 404 screen with your own branded design.
+
+```tsx
+// app/not-found.tsx
+export default function NotFound() {
+  return (
+    <div>
+      <h2>Page Not Found</h2>
+      <p>Could not find the requested page.</p>
+    </div>
+  )
+}
+```
+
+Like `error.tsx`, you can scope `not-found.tsx` to a specific segment by placing it inside a subfolder — useful when you want a different 404 experience for, say, a missing blog post versus a missing product page.
+
+## Triggering a 404 Programmatically
+
+Often you don't know a page doesn't exist until you've tried to fetch the data for it. Use the `notFound()` function from `next/navigation` to throw a 404 from inside your Server Component:
+
+```typescript
+import { notFound } from 'next/navigation'
+
+export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+  const post = await getPost(params.slug)
+  if (!post) notFound()
+  return <article>{post.content}</article>
+}
+```
+
+When you call `notFound()`, Next.js immediately renders your `not-found.tsx` file instead of the page. No need to return early or conditionally render anything else — calling `notFound()` is enough.
+
+## Try/Catch in Data Fetching
+
+For errors that aren't 404s — like a failed API call — wrap your data fetching in a `try/catch` block and handle the error gracefully rather than letting it bubble up to `error.tsx` unchecked.
+
+```typescript
+async function getPost(slug: string) {
+  try {
+    const response = await fetch(`https://api.example.com/posts/${slug}`)
+    if (!response.ok) throw new Error('Failed to fetch post')
+    return response.json()
+  } catch (error) {
+    console.error('Error fetching post:', error)
+    return null
+  }
+}
+```
+
+<Steps>
+  <Step title="Fetch the data">
+    Call your API or database query inside a `try` block.
+  </Step>
+  <Step title="Check for null">
+    If the function returns `null` (as in the example above), call `notFound()` to show a 404.
+  </Step>
+  <Step title="Let unexpected errors bubble up">
+    Only catch errors you can handle. Let truly unexpected errors propagate to `error.tsx` so you can see them and fix them.
+  </Step>
+</Steps>
+
+<Info>
+  The `error.digest` property on the error object is a hash of the error, automatically logged by Next.js on the server. You can use it to look up the full server-side error in your logs without exposing sensitive stack trace details to users.
+</Info>
+
+## What's Next
+
+<Card title="Loading States" icon="spinner" href="/practical/loading-states">
+  Learn how to show loading UI while your pages fetch data, using `loading.tsx` and React Suspense boundaries.
+</Card>

@@ -1,0 +1,137 @@
+---
+title: "Navigation & Links in Next.js App Router"
+sidebarTitle: "Navigation Links"
+description: "Learn how to navigate between pages using the Link component, style active links with usePathname, and trigger programmatic navigation with useRouter."
+---
+
+Navigating between pages is one of the most fundamental things any web app needs to do. Next.js makes this seamless with its built-in `<Link>` component and navigation hooks — giving you fast, client-side transitions without writing any extra configuration.
+
+## The `<Link>` Component
+
+In plain HTML you use `<a>` tags to link between pages. In Next.js, you replace those with the `<Link>` component imported from `next/link`. It looks almost identical to an `<a>` tag, but does a lot more under the hood.
+
+```tsx
+import Link from 'next/link'
+
+export default function Navbar() {
+  return (
+    <nav>
+      <Link href="/">Home</Link>
+      <Link href="/about">About</Link>
+      <Link href="/blog">Blog</Link>
+    </nav>
+  )
+}
+```
+
+<CardGroup cols={3}>
+  <Card title="Client-Side Navigation" icon="bolt">
+    Page transitions happen in the browser without a full reload, so your app feels instant.
+  </Card>
+  <Card title="Automatic Prefetching" icon="download">
+    Next.js prefetches linked pages in the background when they appear in the viewport.
+  </Card>
+  <Card title="No Full Reload" icon="arrows-rotate">
+    Shared layout components (like navbars) stay mounted and don't flicker between pages.
+  </Card>
+</CardGroup>
+
+<Note>
+  Always use `<Link>` for **internal** navigation. Only use a regular `<a>` tag for links that go to external websites.
+</Note>
+
+## Active Link Styling
+
+You'll often want to highlight the link for the page the user is currently on. The `usePathname()` hook gives you the current URL path, letting you compare it against each link's `href` to decide whether it's active.
+
+Because `usePathname()` is a React hook, the component that uses it must be a **Client Component** — mark it with `'use client'` at the top.
+
+```tsx
+'use client'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+
+export function NavLink({ href, label }: { href: string; label: string }) {
+  const pathname = usePathname()
+  const isActive = pathname === href
+  return (
+    <Link
+      href={href}
+      className={isActive ? 'font-bold text-green-600' : 'text-gray-600'}
+    >
+      {label}
+    </Link>
+  )
+}
+```
+
+You can then use `<NavLink>` anywhere in your navbar or sidebar:
+
+```tsx
+<NavLink href="/" label="Home" />
+<NavLink href="/about" label="About" />
+<NavLink href="/blog" label="Blog" />
+```
+
+<Tip>
+  For nested routes (e.g. `/blog` should also be active on `/blog/my-post`), use `pathname.startsWith(href)` instead of a strict equality check.
+</Tip>
+
+## Programmatic Navigation with `useRouter`
+
+Sometimes you need to navigate in response to an event — after a form submission, after a timer, or from a button click that isn't a normal link. The `useRouter` hook from `next/navigation` gives you programmatic control.
+
+```tsx
+'use client'
+import { useRouter } from 'next/navigation'
+
+export function BackButton() {
+  const router = useRouter()
+  return <button onClick={() => router.back()}>Go Back</button>
+}
+```
+
+The most useful `router` methods are:
+
+| Method | What it does |
+|---|---|
+| `router.push('/path')` | Navigate to a new page (adds to history) |
+| `router.replace('/path')` | Navigate without adding to history |
+| `router.back()` | Go back one step in browser history |
+| `router.refresh()` | Re-fetch data for the current page |
+
+<Warning>
+  `useRouter` from `next/navigation` is for the **App Router**. If you see examples importing from `next/router`, those are for the older Pages Router — they won't work in `app/`.
+</Warning>
+
+## Linking to Dynamic Routes
+
+When linking to a dynamic route like `/blog/[slug]`, use a template literal to build the `href` string at runtime:
+
+```tsx
+import Link from 'next/link'
+
+export function PostCard({ slug, title }: { slug: string; title: string }) {
+  return (
+    <Link href={`/blog/${slug}`}>
+      <h2>{title}</h2>
+    </Link>
+  )
+}
+```
+
+For deeply nested dynamic routes such as `/shop/[category]/[productId]`, keep building the string:
+
+```tsx
+<Link href={`/shop/${category}/${productId}`}>View Product</Link>
+```
+
+<Info>
+  Next.js will automatically prefetch dynamic route links too, as long as they appear in the viewport and the route has been statically generated or is available on the server.
+</Info>
+
+## What's Next
+
+<Card title="Images & Fonts" icon="image" href="/practical/images-fonts">
+  Learn how to add optimized images and self-hosted fonts to your Next.js app with zero configuration.
+</Card>

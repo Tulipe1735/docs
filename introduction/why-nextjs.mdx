@@ -1,0 +1,102 @@
+---
+title: "Why Next.js Dominates Modern Web Development"
+sidebarTitle: "Why Next.js?"
+description: "Discover why Next.js has become the go-to React framework, what it adds over plain React, and how the App Router enables full-stack development in one codebase."
+---
+
+Before you write your first line of Next.js code, it helps to understand why the framework exists, what problem it solves, and why so many teams — from scrappy startups to household-name companies — have standardised on it. This context will make everything that follows feel less arbitrary and more intentional.
+
+## The Problem With Plain React
+
+React is a UI library, not a framework. That is a feature, not a flaw — React gives you enormous flexibility. But that flexibility comes with a cost: **you have to make a lot of decisions yourself**.
+
+When you build with plain React (or Create React App), you quickly run into questions the library does not answer for you:
+
+- How do you handle routing between pages?
+- How do you fetch data on the server before rendering?
+- How do you optimise images for different screen sizes?
+- Where do you put your API logic?
+- How do you make your app fast enough for real users?
+
+Next.js answers all of these questions with well-designed, production-tested conventions. You spend less time configuring infrastructure and more time building features.
+
+## What Next.js Adds on Top of React
+
+<CardGroup cols={2}>
+  <Card title="File-Based Routing" icon="folder-tree">
+    Create a file in the `app/` directory and it becomes a route. No router configuration required.
+  </Card>
+  <Card title="Server Rendering" icon="server">
+    Pages can be rendered on the server, improving performance and making your app indexable by search engines.
+  </Card>
+  <Card title="API Routes" icon="plug">
+    Write backend API endpoints inside the same project — no separate server needed.
+  </Card>
+  <Card title="Image Optimisation" icon="image">
+    The built-in `<Image>` component automatically resizes, compresses, and lazy-loads images.
+  </Card>
+  <Card title="Built-In CSS Support" icon="palette">
+    CSS Modules, Tailwind CSS, and CSS-in-JS solutions all work out of the box with zero config.
+  </Card>
+  <Card title="Automatic Code Splitting" icon="scissors">
+    Next.js only sends the JavaScript a page actually needs, keeping initial load times fast.
+  </Card>
+</CardGroup>
+
+## The App Router: The Modern Way to Build
+
+Next.js has two routing systems. The older one — the **Pages Router** — is well-established and still widely used. The newer one — the **App Router** — was introduced in Next.js 13 and became fully stable in Next.js 14.
+
+This course teaches the **App Router exclusively**, and for good reason:
+
+- It is the officially recommended approach going forward.
+- It introduces **React Server Components**, which let you fetch data directly inside your UI components without extra API calls.
+- It supports **nested layouts**, making it easy to share UI elements like sidebars and headers across multiple pages without duplicating code.
+- It aligns closely with the direction React itself is heading, so skills transfer.
+
+<Note>
+  You will occasionally encounter tutorials or Stack Overflow answers that use the Pages Router. The patterns look slightly different. When in doubt, check this handbook — all examples here use the App Router.
+</Note>
+
+## Who Uses Next.js in Production
+
+Next.js is not an experimental technology. It is battle-tested at massive scale:
+
+- **Vercel** — the company behind Next.js, running their own platform on it.
+- **Hulu** — serving millions of streaming users with Next.js-powered pages.
+- **TikTok** — using Next.js for parts of their web experience.
+- **OpenAI** — the ChatGPT web interface is built with Next.js.
+- **Thousands of startups** — because it offers a fast path from idea to deployed product.
+
+This adoption means a thriving ecosystem: abundant tutorials, active community forums, plentiful job postings, and a framework that will continue to be maintained and improved.
+
+## Full-Stack in One Framework
+
+One of the most compelling things about Next.js is that it collapses the traditional separation between frontend and backend into a single, cohesive codebase.
+
+```
+my-app/
+├── app/
+│   ├── page.tsx          ← Your homepage (frontend)
+│   ├── about/
+│   │   └── page.tsx      ← /about route (frontend)
+│   └── api/
+│       └── users/
+│           └── route.ts  ← /api/users endpoint (backend)
+```
+
+Your React components and your API endpoints live side by side. You can share TypeScript types, utility functions, and database logic between them without maintaining two separate repositories. For individuals and small teams especially, this is a massive productivity advantage.
+
+<Tip>
+  If you have ever had to coordinate a separate Express or FastAPI backend with a React frontend, you will immediately appreciate how much simpler the Next.js full-stack model feels.
+</Tip>
+
+## What's Next
+
+Now that you understand *why* Next.js is worth learning, it is time to get into the details of what it actually is and how it works.
+
+<CardGroup cols={2}>
+  <Card title="What Is Next.js?" icon="book-open" href="/getting-started/what-is-nextjs">
+    Dive deeper into the architecture, core concepts, and mental models that underpin Next.js.
+  </Card>
+</CardGroup>

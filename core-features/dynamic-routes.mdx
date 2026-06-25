@@ -1,0 +1,151 @@
+---
+title: "Dynamic Routes in the Next.js App Router"
+sidebarTitle: "Dynamic Routes"
+description: "Create pages that match dynamic URL segments like blog slugs and user IDs using bracket syntax, params props, and generateStaticParams."
+---
+
+Dynamic routes let you create a single page file that handles an infinite number of URLs. Instead of creating one file per blog post or one file per user profile, you define a template once and Next.js fills in the variable part of the URL at request time. This is how almost every real-world application works — you can't know every blog slug or product ID in advance.
+
+## Creating a Dynamic Route
+
+Wrap a folder name in square brackets to mark it as a dynamic segment. Next.js treats anything inside those brackets as a variable that can match any value in that URL position.
+
+```
+app/
+└── blog/
+    ├── page.tsx           →  /blog
+    └── [slug]/
+        └── page.tsx       →  /blog/anything
+```
+
+With this structure, visiting `/blog/hello-world`, `/blog/my-first-post`, or `/blog/42` all resolve to the same `app/blog/[slug]/page.tsx` file. The variable part of the URL is captured and passed to your component as a prop.
+
+## Accessing the Dynamic Segment
+
+Next.js injects a `params` prop into every dynamic route component. The object's keys match your bracket names.
+
+```tsx
+// app/blog/[slug]/page.tsx
+interface BlogPostPageProps {
+  params: { slug: string }
+}
+
+export default async function BlogPostPage({ params }: BlogPostPageProps) {
+  const { slug } = params
+  // fetch post with this slug...
+  return (
+    <article>
+      <h1>Post: {slug}</h1>
+    </article>
+  )
+}
+```
+
+In practice, you use `slug` (or whichever param name you chose) to look up data:
+
+```tsx
+// app/blog/[slug]/page.tsx
+interface BlogPostPageProps {
+  params: { slug: string }
+}
+
+async function getPost(slug: string) {
+  const res = await fetch(`https://api.example.com/posts/${slug}`)
+  if (!res.ok) throw new Error('Post not found')
+  return res.json()
+}
+
+export default async function BlogPostPage({ params }: BlogPostPageProps) {
+  const post = await getPost(params.slug)
+
+  return (
+    <article>
+      <h1>{post.title}</h1>
+      <p>{post.content}</p>
+    </article>
+  )
+}
+```
+
+<Note>
+  You can have multiple dynamic segments in a single route — for example, `app/[category]/[slug]/page.tsx` would give you both `params.category` and `params.slug`. Each folder level gets its own bracket name.
+</Note>
+
+## Generating Static Pages with `generateStaticParams`
+
+By default, dynamic routes are rendered on demand (dynamically). If you know all the possible values of a segment at build time — like all your blog post slugs — you can tell Next.js to pre-render every page statically by exporting `generateStaticParams`.
+
+```tsx
+// app/blog/[slug]/page.tsx
+export async function generateStaticParams() {
+  const posts = await getPosts()
+  return posts.map((post) => ({ slug: post.slug }))
+}
+```
+
+Next.js calls `generateStaticParams` at build time, receives the array of `{ slug }` objects, and generates a static HTML file for each one. The result is a set of pages that serve instantly from a CDN — with zero server rendering at request time.
+
+<Tip>
+  `generateStaticParams` pairs perfectly with ISR. If you set a `revalidate` value in the same file, Next.js will regenerate each static page in the background after the time-to-live expires — you get the speed of static HTML with the freshness of server rendering.
+</Tip>
+
+## Catch-All Routes
+
+Sometimes you need to match a variable number of URL segments — a documentation site with nested paths, for example. Use `[...slug]` (three dots before the name) to create a catch-all route.
+
+```
+app/
+└── docs/
+    └── [...slug]/
+        └── page.tsx   →  /docs/intro
+                       →  /docs/guides/authentication
+                       →  /docs/api/reference/users
+```
+
+The `params.slug` value will be an **array** of path segments rather than a single string:
+
+```tsx
+// app/docs/[...slug]/page.tsx
+interface DocsPageProps {
+  params: { slug: string[] }
+}
+
+export default function DocsPage({ params }: DocsPageProps) {
+  // /docs/guides/authentication → params.slug = ['guides', 'authentication']
+  const path = params.slug.join('/')
+
+  return <h1>Docs: {path}</h1>
+}
+```
+
+<Info>
+  If you want the catch-all to also match the root path (`/docs` with no segments), use **optional catch-all** syntax: `[[...slug]]` (double brackets). With `[...slug]`, visiting `/docs` with no additional segments returns a 404.
+</Info>
+
+## Dynamic API Routes
+
+Dynamic segments work exactly the same way in Route Handlers. Wrap a folder in brackets and destructure `params` from the second argument:
+
+```typescript
+// app/api/posts/[id]/route.ts
+import { NextRequest, NextResponse } from 'next/server'
+
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const post = await db.post.findUnique({ where: { id: params.id } })
+
+  if (!post) {
+    return NextResponse.json({ error: 'Not found' }, { status: 404 })
+  }
+
+  return NextResponse.json(post)
+}
+```
+
+## What's Next
+
+<Card title="Metadata and SEO" icon="magnifying-glass" href="core-features/metadata-seo">
+  Learn how to set page titles, descriptions, and Open Graph tags so your Next.js pages rank well in search engines and look great when shared on social media.
+</Card>

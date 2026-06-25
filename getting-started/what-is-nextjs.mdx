@@ -1,0 +1,104 @@
+---
+title: "What Is Next.js and Why Should You Learn It?"
+sidebarTitle: "What Is Next.js"
+description: "Learn what Next.js is, why developers choose it over plain React, and what makes it the go-to framework for building modern full-stack web applications."
+---
+
+Next.js is one of the most popular tools in modern web development, and for good reason — it takes React, the world's most widely used UI library, and wraps it in a powerful framework that handles all the hard parts of building a real web application. If you've ever wondered how professional developers go from an idea to a fast, production-ready website, Next.js is a huge piece of that puzzle.
+
+## What Is a Web Framework, and Why Do We Need One?
+
+When you build a website with plain HTML, CSS, and JavaScript, you're responsible for everything: organizing your files, wiring up navigation between pages, fetching data from a server, optimizing images so they load quickly, and much more. That's a lot of decisions and a lot of boilerplate code before you've written a single line of your actual app.
+
+A **web framework** is a collection of tools, conventions, and pre-built solutions that handle those common problems for you. Instead of reinventing the wheel every time, you follow the framework's patterns and focus on what makes your app unique.
+
+Think of it like building a house. You could quarry your own stone, mill your own lumber, and forge your own nails — or you could start with a solid foundation and pre-cut materials. A framework is that foundation.
+
+## What Is Next.js?
+
+Next.js is a **React framework for building full-stack web applications**. It was created by [Vercel](https://vercel.com) and is now used by companies like Netflix, TikTok, Twitch, and The Washington Post.
+
+Here's the big picture of how it works:
+
+1. You write your UI using **React components** and **Next.js conventions**
+2. Next.js handles routing, rendering, data fetching, and optimization automatically
+3. Your users get a fast, polished application in their browser
+
+You get the flexibility of React with the structure and power of a full framework — without having to configure everything from scratch.
+
+## What Makes Next.js Special?
+
+Next.js ships with a set of features that would otherwise take days to set up manually:
+
+<CardGroup cols={2}>
+  <Card title="File-Based Routing" icon="folder-tree">
+    Create a file in the `app/` folder and it automatically becomes a route. No router configuration needed.
+  </Card>
+  <Card title="Server & Client Components" icon="server">
+    Choose where your components run — on the server for performance, or in the browser for interactivity.
+  </Card>
+  <Card title="Built-In API Routes" icon="plug">
+    Write backend logic right inside your Next.js project. No separate server required.
+  </Card>
+  <Card title="Image Optimization" icon="image">
+    The `<Image>` component automatically resizes, compresses, and lazy-loads your images.
+  </Card>
+  <Card title="TypeScript Support" icon="code">
+    TypeScript works out of the box with zero configuration — just name your files `.tsx`.
+  </Card>
+  <Card title="Fast Refresh" icon="bolt">
+    See your changes instantly in the browser as you edit. No full page reloads required.
+  </Card>
+</CardGroup>
+
+## Your First Taste: A Next.js Page
+
+Every page in a Next.js app is just a React component exported from a file. Here's what the simplest possible page looks like:
+
+```jsx
+// app/page.tsx
+export default function HomePage() {
+  return (
+    <main>
+      <h1>Hello, Next.js!</h1>
+      <p>This is my first Next.js page.</p>
+    </main>
+  )
+}
+```
+
+That's it. Drop that file in the `app/` folder and Next.js automatically serves it at the root URL (`/`). No routing configuration, no imports from a router library — the file system *is* the router.
+
+<Note>
+  Don't worry if this looks unfamiliar right now. By the end of this course, writing components like this will feel completely natural.
+</Note>
+
+## Which Version of Next.js Are We Using?
+
+This course uses **Next.js 14 or later** with the **App Router** — the modern, recommended way to build Next.js applications. You may come across older tutorials that reference the "Pages Router" (where pages live in a `pages/` folder instead of `app/`). The App Router is the current standard, and that's what we'll use throughout this course.
+
+<Warning>
+  If you find a tutorial online that uses `pages/index.js` or `getServerSideProps`, it's using the older Pages Router. The concepts overlap, but the syntax is different. Stick with the App Router patterns you'll learn here.
+</Warning>
+
+## The Next.js Ecosystem at a Glance
+
+Next.js doesn't exist in isolation. It sits at the center of a modern development stack:
+
+| Layer | Tool |
+|---|---|
+| UI Library | React |
+| Framework | Next.js |
+| Styling | Tailwind CSS (used in this course) |
+| Language | TypeScript |
+| Deployment | Vercel (or any Node.js host) |
+
+You'll work with all of these throughout the course. For now, just know that they all fit together cleanly — Next.js is designed to work well with each of them.
+
+## Ready to Install?
+
+Before you can build anything, you need Node.js installed on your machine. It's the JavaScript runtime that powers Next.js under the hood.
+
+<Card title="Install Node.js →" icon="node-js" href="getting-started/installing-nodejs">
+  Set up Node.js on your machine — it's the only prerequisite before you can create your first Next.js project.
+</Card>

@@ -1,0 +1,110 @@
+---
+title: "Environment Variables in Next.js Apps"
+sidebarTitle: "Env Variables"
+description: "Keep API keys and secrets out of your codebase using .env.local files, understand the NEXT_PUBLIC_ prefix, and manage variables across deployments on Vercel."
+---
+
+Hard-coding secrets like API keys or database passwords directly into your source code is a serious security risk — anyone who can read your code can access those credentials. Environment variables solve this by storing sensitive configuration outside your codebase, so your secrets never accidentally end up in a Git repository or a screenshot.
+
+## Creating a `.env.local` File
+
+Create a file named `.env.local` at the root of your project (the same level as `package.json`). This is where you store all your local development secrets.
+
+```bash
+# .env.local
+DATABASE_URL=postgresql://localhost:5432/myapp
+NEXT_PUBLIC_API_URL=https://api.example.com
+SECRET_API_KEY=sk_test_abc123
+```
+
+<Warning>
+  **Never commit `.env.local` to Git.** It contains real secrets that should never be shared. Fortunately, `create-next-app` automatically adds `.env.local` to your `.gitignore` — but always double-check before your first commit.
+</Warning>
+
+## The `NEXT_PUBLIC_` Prefix
+
+Next.js uses the variable name to decide where it's available:
+
+| Variable name | Available in | Use for |
+|---|---|---|
+| `NEXT_PUBLIC_API_URL` | Server **and** browser | Public API endpoints, feature flags |
+| `DATABASE_URL` | Server only | Database connection strings |
+| `SECRET_API_KEY` | Server only | Private API keys, tokens |
+
+Any variable that starts with `NEXT_PUBLIC_` is **inlined into the browser bundle at build time** — treat it as publicly visible. Variables without that prefix are **server-only** and are never sent to the browser.
+
+<Warning>
+  Never put private credentials (passwords, secret keys, tokens) in a `NEXT_PUBLIC_` variable. Anyone can view these values by inspecting your site's JavaScript bundle.
+</Warning>
+
+## Accessing Variables on the Server
+
+In Server Components, API Route Handlers, and `generateStaticParams`, you read environment variables directly from `process.env`:
+
+```typescript
+// Only available on the server
+const dbUrl = process.env.DATABASE_URL
+const secretKey = process.env.SECRET_API_KEY
+```
+
+This works in any server-side Next.js context — Server Components, Route Handlers (`app/api/`), and middleware.
+
+## Accessing Variables in Client Components
+
+In Client Components, **only `NEXT_PUBLIC_` variables are available**. Non-public variables will be `undefined` in the browser.
+
+```typescript
+'use client'
+// Only NEXT_PUBLIC_ vars work here
+const apiUrl = process.env.NEXT_PUBLIC_API_URL
+```
+
+<Note>
+  `NEXT_PUBLIC_` variables are replaced with their literal values at **build time**, not at runtime. This means if you change a `NEXT_PUBLIC_` variable on your hosting platform, you need to **rebuild and redeploy** for the change to take effect in the browser.
+</Note>
+
+## The `.env.example` File
+
+Your `.env.local` file is secret and never committed, but your teammates still need to know which variables are required to run the project. The solution is a `.env.example` file — an identical template with all the variable names listed but **no real values**.
+
+```bash
+# .env.example  ← commit this to Git
+DATABASE_URL=
+NEXT_PUBLIC_API_URL=
+SECRET_API_KEY=
+```
+
+When a new developer clones the repo, they copy `.env.example` to `.env.local` and fill in their own values.
+
+<Tip>
+  Add a comment next to each variable in `.env.example` explaining what it's for and where to find or generate the value. Future teammates (and future you) will thank you.
+</Tip>
+
+## Environment Variables on Vercel
+
+When you deploy to Vercel, your local `.env.local` file is not uploaded — you configure variables directly in the Vercel dashboard instead.
+
+<Steps>
+  <Step title="Open Project Settings">
+    Go to your project on [vercel.com](https://vercel.com), then click the **Settings** tab.
+  </Step>
+  <Step title="Find Environment Variables">
+    Select **Environment Variables** from the left sidebar.
+  </Step>
+  <Step title="Add Your Variables">
+    Enter each variable name and value. You can scope them to **Production**, **Preview**, or **Development** environments separately.
+  </Step>
+  <Step title="Redeploy">
+    Save the variables and trigger a new deployment. Vercel injects them into the build automatically.
+  </Step>
+</Steps>
+
+<Info>
+  Vercel also supports a **Development** environment scope, which lets you pull variables locally using the Vercel CLI (`vercel env pull`) so you don't have to manage `.env.local` manually on every machine.
+</Info>
+
+## What's Next
+
+<Card title="Error Handling" icon="triangle-exclamation" href="/practical/error-handling">
+  Learn how to catch errors gracefully with `error.tsx` and show custom 404 pages with `not-found.tsx`.
+</Card>

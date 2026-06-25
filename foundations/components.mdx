@@ -1,0 +1,155 @@
+---
+title: "Building Reusable Components in Next.js"
+sidebarTitle: "Components"
+description: "Learn how to build React components — the reusable building blocks of your UI — and organize them cleanly inside your Next.js project."
+---
+
+Every user interface you build in Next.js is made up of components. A component is simply a JavaScript function that returns JSX — a description of what should appear on screen. The power of components comes from their reusability: you define a piece of UI once and use it anywhere in your app, passing different data each time via **props**.
+
+## What Is a Component?
+
+At its simplest, a component is a function that returns some JSX. Here's the smallest possible example:
+
+```tsx
+export function Greeting() {
+  return <p>Hello, world!</p>
+}
+```
+
+That's it. You can drop `<Greeting />` anywhere in your app and that paragraph will appear. When you need to change the text, you update one function instead of hunting through every page.
+
+## Building a Real Component
+
+Let's build something more practical — a reusable `Button` component with props.
+
+```tsx
+// components/Button.tsx
+interface ButtonProps {
+  label: string
+  onClick?: () => void
+}
+
+export function Button({ label, onClick }: ButtonProps) {
+  return (
+    <button onClick={onClick} className="px-4 py-2 bg-blue-500 text-white rounded">
+      {label}
+    </button>
+  )
+}
+```
+
+Breaking this down:
+
+- **`interface ButtonProps`** defines the shape of the data this component accepts. TypeScript will warn you if you forget a required prop or pass the wrong type.
+- **`label: string`** is a required prop — the text displayed on the button.
+- **`onClick?: () => void`** is optional (note the `?`). If you don't pass it, the button simply does nothing when clicked.
+- **`{ label, onClick }`** is destructuring — a clean way to pull props out of the argument object.
+
+## Where to Put Your Components
+
+Create a `components/` folder at the **root of your project** (alongside `app/`, not inside it). This keeps your reusable UI separate from your routing structure.
+
+```
+my-first-app/
+├── app/
+│   └── page.tsx
+├── components/
+│   ├── Button.tsx
+│   ├── Navbar.tsx
+│   └── Card.tsx
+└── ...
+```
+
+<Note>
+  You can also co-locate components inside the `app/` folder if they're only used by a specific route. The general rule: if a component is used in more than one place, put it in `components/`. If it belongs to one route, keep it next to that route's `page.tsx`.
+</Note>
+
+## Using a Component in a Page
+
+Once your component is defined, import it into any page and use it like an HTML element.
+
+```tsx
+// app/page.tsx
+import { Button } from '@/components/Button'
+
+export default function HomePage() {
+  return (
+    <main>
+      <h1>Hello!</h1>
+      <Button label="Click me" />
+    </main>
+  )
+}
+```
+
+Notice the `@/` at the start of the import path. That's a **path alias** configured by Next.js automatically — it points to the root of your project. Without it, you'd write something like `../../components/Button`, which becomes unwieldy as your folder structure grows.
+
+<Tip>
+  Always prefer `@/` imports over relative `../` paths. They're cleaner, easier to read, and never break when you move files around.
+</Tip>
+
+## Passing Props
+
+Props are the mechanism for passing data into a component. Every time you render a component, you can give it different props to produce different output.
+
+```tsx
+// Using the same Button component with different props
+<Button label="Sign Up" />
+<Button label="Log In" />
+<Button label="Learn More" onClick={() => console.log('clicked!')} />
+```
+
+Each instance is independent. Changing the `label` prop on one doesn't affect the others. This is what makes components so powerful — **one definition, infinite variations**.
+
+<CardGroup cols={2}>
+  <Card title="Required Props" icon="asterisk">
+    Props without a `?` are required. TypeScript will show an error at compile time if you forget to pass them.
+  </Card>
+  <Card title="Optional Props" icon="question">
+    Props marked with `?` in the interface are optional. Always provide a sensible default behavior when they're absent.
+  </Card>
+  <Card title="The @/ Alias" icon="at">
+    `@/` always resolves to your project root. Use it for all component imports to keep paths consistent.
+  </Card>
+  <Card title="Default Exports vs Named Exports" icon="arrow-right-from-bracket">
+    Pages use default exports (`export default`). Components typically use named exports (`export function`) so you can export multiple from one file.
+  </Card>
+</CardGroup>
+
+## Composing Components Together
+
+The real strength of components emerges when you compose them — building complex UIs from simple pieces. A `Card` component might use your `Button` component internally:
+
+```tsx
+// components/Card.tsx
+import { Button } from '@/components/Button'
+
+interface CardProps {
+  title: string
+  description: string
+}
+
+export function Card({ title, description }: CardProps) {
+  return (
+    <div className="p-6 bg-white rounded-lg shadow">
+      <h2 className="text-xl font-bold">{title}</h2>
+      <p className="text-gray-600 mt-2">{description}</p>
+      <div className="mt-4">
+        <Button label="Read More" />
+      </div>
+    </div>
+  )
+}
+```
+
+<Warning>
+  Avoid creating components that are too large and do too many things. If a component's JSX is getting long or it handles multiple unrelated concerns, split it into smaller components. Smaller components are easier to test, reuse, and reason about.
+</Warning>
+
+## What's Next
+
+Now that you know how to build components, the next step is making them look good. Let's explore the three main ways to style your Next.js app.
+
+<Card title="Styling" icon="arrow-right" href="foundations/styling">
+  Learn how to use Tailwind CSS, CSS Modules, and global styles to design your app.
+</Card>

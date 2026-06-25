@@ -1,0 +1,162 @@
+---
+title: "Metadata and SEO in the Next.js App Router"
+sidebarTitle: "Metadata & SEO"
+description: "Set page titles, meta descriptions, and Open Graph tags in Next.js using static metadata exports, generateMetadata, and layout-level title templates."
+---
+
+Good SEO starts with the right metadata: accurate page titles, descriptive meta descriptions, and Open Graph tags that control how your pages look when shared on social media. The App Router handles all of this through a typed `Metadata` API — no `<head>` manipulation, no third-party packages, just a plain export that Next.js picks up automatically and renders into the correct HTML tags.
+
+## Static Metadata
+
+The simplest approach is to export a `metadata` object from any `page.tsx` or `layout.tsx` file. Next.js reads this at build time and injects the appropriate `<meta>` and `<title>` tags into the `<head>` of that page.
+
+```typescript
+// app/about/page.tsx
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'About Us',
+  description: 'Learn more about our team and mission.',
+  openGraph: {
+    title: 'About Us',
+    description: 'Learn more about our team and mission.',
+    images: ['/og-image.png'],
+  },
+}
+
+export default function AboutPage() {
+  return <h1>About Us</h1>
+}
+```
+
+Next.js generates the following HTML from that single export:
+
+```html
+<title>About Us</title>
+<meta name="description" content="Learn more about our team and mission." />
+<meta property="og:title" content="About Us" />
+<meta property="og:description" content="Learn more about our team and mission." />
+<meta property="og:image" content="/og-image.png" />
+```
+
+<Note>
+  The `Metadata` type from `next` gives you full TypeScript autocompletion for every supported field — `keywords`, `robots`, `twitter`, `canonical`, `alternates`, and many more. Hover over the type in your editor to explore what's available.
+</Note>
+
+## Dynamic Metadata with `generateMetadata`
+
+When metadata depends on data you need to fetch — like the title of a specific blog post — export an async `generateMetadata` function instead of a static object. Next.js calls this function at request time (or build time with SSG) and uses the return value to render the `<head>`.
+
+```typescript
+// app/blog/[slug]/page.tsx
+import type { Metadata } from 'next'
+
+export async function generateMetadata(
+  { params }: { params: { slug: string } }
+): Promise<Metadata> {
+  const post = await getPost(params.slug)
+  return {
+    title: post.title,
+    description: post.excerpt,
+  }
+}
+```
+
+You have access to the same `params` object that your page component receives, so you can fetch the same data and build metadata that reflects the actual content of the page.
+
+<Tip>
+  Next.js **deduplicates** `fetch` calls automatically. If `generateMetadata` and your page component both call `getPost(params.slug)`, the network request only happens once. You don't need to thread data through props or reach for a global cache.
+</Tip>
+
+### Complete Dynamic Metadata Example
+
+Here's a more complete example showing how to handle the case where a post doesn't exist:
+
+```typescript
+// app/blog/[slug]/page.tsx
+import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
+
+async function getPost(slug: string) {
+  const res = await fetch(`https://api.example.com/posts/${slug}`)
+  if (!res.ok) return null
+  return res.json()
+}
+
+export async function generateMetadata(
+  { params }: { params: { slug: string } }
+): Promise<Metadata> {
+  const post = await getPost(params.slug)
+
+  if (!post) {
+    return { title: 'Post Not Found' }
+  }
+
+  return {
+    title: post.title,
+    description: post.excerpt,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      images: [post.coverImage],
+    },
+  }
+}
+
+export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+  const post = await getPost(params.slug)
+  if (!post) notFound()
+
+  return (
+    <article>
+      <h1>{post.title}</h1>
+      <p>{post.content}</p>
+    </article>
+  )
+}
+```
+
+## Title Templates in `layout.tsx`
+
+You probably want every page title to include your app's name — "About Us | My App", "Blog | My App", and so on. Instead of repeating that suffix in every page, define a title **template** in your root `layout.tsx`. Next.js automatically applies it to any page that sets a title.
+
+```typescript
+// app/layout.tsx
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: {
+    template: '%s | My App',
+    default: 'My App',   // Used when a page doesn't set its own title
+  },
+  description: 'Learn Next.js from scratch with hands-on projects.',
+}
+```
+
+With this template in place, a page that exports `title: 'About Us'` automatically renders as **"About Us | My App"** in the browser tab. The `default` field is used for pages that don't export any metadata at all.
+
+<Steps>
+  <Step title="Root layout sets the template">
+    Define `title.template` in `app/layout.tsx` once. The `%s` placeholder is replaced with each page's individual title.
+  </Step>
+  <Step title="Each page sets its own title">
+    Export `metadata.title` as a plain string from individual page files. No need to repeat the app name.
+  </Step>
+  <Step title="Next.js combines them automatically">
+    The final `<title>` tag merges the page title into the template: `"%s | My App"` → `"About Us | My App"`.
+  </Step>
+</Steps>
+
+## Metadata Inheritance and Overriding
+
+Metadata is **merged** from parent layouts down to child pages. A child's metadata fields override the parent's, but fields the child doesn't set are inherited from the nearest ancestor layout.
+
+<Info>
+  If a nested layout defines its own `title.template`, it overrides the root layout's template for all pages beneath it. This is useful for sections of your app that need a different naming convention — for example, a dashboard section could use `"%s | Dashboard"` while the marketing pages use `"%s | My App"`.
+</Info>
+
+## What's Next
+
+<Card title="Navigation and Links" icon="link" href="practical/navigation-links">
+  Now that your pages have great metadata, learn how to navigate between them using Next.js's `Link` component and the `useRouter` hook.
+</Card>

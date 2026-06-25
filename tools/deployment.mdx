@@ -1,0 +1,106 @@
+---
+title: "Deploying Your Next.js App to Vercel"
+sidebarTitle: "Deployment"
+description: "Go from local project to live URL in minutes. Deploy your Next.js app to Vercel with automatic deployments, preview URLs, and zero configuration."
+---
+
+Getting your app onto the internet is one of the most satisfying moments in development, and with Vercel it takes less time than brewing a coffee. Vercel is the company behind Next.js itself, which means the two are designed to work perfectly together — features like Server Components, Server Actions, and Image Optimization all work out of the box with zero extra configuration.
+
+## Why Vercel
+
+Vercel built Next.js and they run the infrastructure that powers it. That means every Next.js feature you learn in this course is a first-class citizen on Vercel — no workarounds, no adapter layers, no surprises.
+
+<CardGroup cols={3}>
+  <Card title="Zero Config" icon="sliders">
+    Vercel auto-detects that your project is a Next.js app and applies all the right build settings automatically.
+  </Card>
+  <Card title="Automatic Deployments" icon="arrows-rotate">
+    Every push to `main` triggers a new deployment. Your live site stays in sync with your code.
+  </Card>
+  <Card title="Preview URLs" icon="eye">
+    Every pull request gets its own live preview URL, so you can review changes before they go live.
+  </Card>
+</CardGroup>
+
+## Deploying Step by Step
+
+<Steps>
+  <Step title="Push Your Code to GitHub">
+    Vercel deploys from GitHub, so your code needs to be in a repository first. If you haven't done this yet, follow the [Git & GitHub guide](tools/git-github) to get your project pushed.
+  </Step>
+  <Step title="Sign In to Vercel">
+    Go to [vercel.com](https://vercel.com) and click **Sign Up** (or **Log In**). Choose **Continue with GitHub** — this links your Vercel account to your repositories and is required for automatic deployments.
+  </Step>
+  <Step title="Import Your Repository">
+    From your Vercel dashboard, click **Add New → Project**. You'll see a list of your GitHub repositories. Find your Next.js project and click **Import**.
+  </Step>
+  <Step title="Review the Auto-Detected Settings">
+    Vercel automatically detects that you're using Next.js and fills in the correct framework preset, build command (`npm run build`), and output directory. You don't need to change anything here — just verify it looks right.
+  </Step>
+  <Step title="Add Environment Variables">
+    If your project uses a `.env.local` file, you need to add those variables to Vercel before deploying. Click **Environment Variables** and add each key-value pair from your local file. These are kept secret and injected into your app at build and runtime.
+  </Step>
+  <Step title="Click Deploy">
+    Hit the **Deploy** button. Vercel clones your repository, installs dependencies, runs `next build`, and publishes the result. The whole process takes about a minute.
+  </Step>
+</Steps>
+
+## Your App Is Live
+
+Once the deployment finishes, Vercel gives you a URL like `your-project.vercel.app`. Click it — that's your real, live app on the internet, accessible to anyone in the world.
+
+Every subsequent push to your `main` branch automatically triggers a new deployment, so your live site always reflects your latest code.
+
+## Preview Deployments
+
+When you open a pull request on GitHub, Vercel automatically builds and deploys that branch to a unique preview URL (e.g. `your-project-git-my-feature-yourname.vercel.app`). This is one of Vercel's most powerful features — you can share a link with a teammate or client to review changes before they ever touch production.
+
+<Info>
+  Preview deployments use the same environment variables as your production deployment by default. You can configure separate values per environment (Production, Preview, Development) in **Settings → Environment Variables**.
+</Info>
+
+## Environment Variables on Vercel
+
+Your `.env.local` file is listed in `.gitignore` for good reason — it contains secrets that should never be committed to GitHub. But your deployed app still needs those values. Here's how to add them:
+
+1. Go to your project on [vercel.com/dashboard](https://vercel.com/dashboard)
+2. Click **Settings → Environment Variables**
+3. Add each variable from your `.env.local` file one by one
+4. Choose which environments the variable applies to (Production, Preview, Development)
+5. Redeploy — the new variables take effect on the next build
+
+<Warning>
+  If you add or change environment variables after deploying, you must trigger a new deployment for the changes to take effect. Go to the **Deployments** tab and click **Redeploy** on your latest deployment.
+</Warning>
+
+## Custom Domains
+
+Your `vercel.app` URL is great for sharing and testing, but production apps usually need a real domain. Adding one is straightforward:
+
+1. Go to your project → **Settings → Domains**
+2. Type your domain name and click **Add**
+3. Vercel shows you DNS records to add at your domain registrar (e.g. Namecheap, GoDaddy, Cloudflare)
+4. Once the DNS propagates (usually within minutes on Cloudflare), your domain is live with HTTPS automatically configured
+
+<Note>
+  The free Vercel Hobby plan is more than enough for learning and building personal projects. It includes unlimited personal projects, automatic HTTPS, global CDN, and 100 GB of bandwidth per month. You won't need to upgrade for anything covered in this course.
+</Note>
+
+## Other Deployment Options
+
+Vercel is the recommended choice, but if you ever want to explore alternatives, here's a quick overview:
+
+| Platform | Best For |
+|----------|----------|
+| **Railway** | Full-stack apps that need a database alongside the app |
+| **Render** | Docker-based deployments and background workers |
+| **AWS (Amplify / EC2)** | Enterprise scale with fine-grained infrastructure control |
+| **Self-hosted** | Complete control — run `next start` on your own server |
+
+For this course, stick with Vercel. The seamless GitHub integration and zero-config Next.js support make it the right choice while you're learning.
+
+## What's Next
+
+<Card title="Code Quality Tools" icon="shield-check" href="tools/code-quality">
+  Your app is deployed — now keep the code clean. Set up ESLint, Prettier, and TypeScript type checking to catch bugs before they go live.
+</Card>

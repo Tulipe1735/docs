@@ -1,0 +1,147 @@
+---
+title: "Code Quality: ESLint, Prettier & TypeScript"
+sidebarTitle: "Code Quality"
+description: "Set up ESLint, Prettier, and TypeScript type checking in your Next.js project to catch bugs automatically and keep your codebase clean and consistent."
+---
+
+Professional Next.js projects don't rely on developers remembering every rule — they use tools that enforce good practices automatically. ESLint catches real bugs and anti-patterns before your code ever runs. Prettier formats your code consistently so you never argue about spacing or semicolons again. TypeScript catches type errors at edit time rather than in production. Together, these three tools form the quality baseline for any serious Next.js project, and the good news is that `create-next-app` sets most of this up for you.
+
+## ESLint — Find Bugs Before They Ship
+
+ESLint is a static analysis tool that reads your code and flags problems based on a set of rules. Next.js ships with its own ESLint config (`next/core-web-vitals`) that includes rules specifically tuned for Next.js apps — things like catching incorrect `<Image>` usage, missing `key` props in lists, and improper `<Link>` nesting.
+
+### Running ESLint
+
+ESLint is already wired up in your project. Run it any time with:
+
+```bash
+npm run lint
+```
+
+You'll see output like this when there's an issue:
+
+```bash
+./app/page.tsx
+3:1  Error: `<img>` elements must use the Next.js `<Image>` component. next/no-img-element
+7:5  Warning: React Hook useEffect has a missing dependency: 'userId'. react-hooks/exhaustive-deps
+```
+
+Each error tells you the file, line number, rule name, and a plain-English description. Fix the issue, run lint again, and keep going until you get a clean pass.
+
+### Common ESLint Errors in Next.js
+
+| Error | What it means |
+|-------|---------------|
+| `next/no-img-element` | Use `<Image>` from `next/image` instead of `<img>` |
+| `react-hooks/exhaustive-deps` | Your `useEffect` is missing a dependency in its array |
+| `@next/next/no-html-link-for-pages` | Use `<Link>` from `next/link` instead of `<a>` |
+| `react/no-unescaped-entities` | Use `&apos;` or `&quot;` instead of raw `'` or `"` in JSX |
+
+### The `.eslintrc.json` File
+
+`create-next-app` generates this file at the root of your project:
+
+```json
+{
+  "extends": "next/core-web-vitals"
+}
+```
+
+This single line pulls in Next.js's recommended ruleset. You can extend it with additional rules as you grow more comfortable, but this default is exactly right for this course.
+
+## Prettier — Consistent Formatting on Every Save
+
+Prettier is an opinionated code formatter. It takes your code and reprints it in a consistent style — indentation, quote style, trailing commas, line length — all handled automatically. You write the logic; Prettier handles the presentation.
+
+### Installing Prettier
+
+Prettier isn't included by default, so you install it as a dev dependency:
+
+```bash
+npm install --save-dev prettier
+```
+
+### Creating `.prettierrc`
+
+Create a `.prettierrc` file at the root of your project to define your formatting preferences:
+
+```json
+{
+  "semi": false,
+  "singleQuote": true,
+  "tabWidth": 2,
+  "trailingComma": "es5"
+}
+```
+
+Here's what each option does:
+
+| Option | Value | Effect |
+|--------|-------|--------|
+| `semi` | `false` | No semicolons at line ends |
+| `singleQuote` | `true` | Use `'single'` instead of `"double"` quotes |
+| `tabWidth` | `2` | Two-space indentation |
+| `trailingComma` | `"es5"` | Trailing commas in objects and arrays |
+
+<Info>
+  These settings are a common choice in the Next.js ecosystem, but they're just a starting point. Adjust them to match your team's preferences — the important thing is that everyone on the project uses the same `.prettierrc`.
+</Info>
+
+### VS Code Integration
+
+The real power of Prettier comes when it runs automatically every time you save a file. Set that up in two steps:
+
+<Steps>
+  <Step title="Install the Extension">
+    Open VS Code, go to the Extensions panel (`Cmd+Shift+X` / `Ctrl+Shift+X`), and search for **Prettier - Code formatter** by Prettier. Install it.
+  </Step>
+  <Step title="Enable Format on Save">
+    Open VS Code settings (`Cmd+,` / `Ctrl+,`), search for **Format On Save**, and check the box. Then search for **Default Formatter** and select **Prettier - Code formatter** from the dropdown.
+  </Step>
+</Steps>
+
+From now on, every time you save a file, Prettier silently reformats it. You'll never manually align code again.
+
+## TypeScript — Catch Bugs Before You Run Anything
+
+`create-next-app` configures TypeScript by default, which means every `.ts` and `.tsx` file in your project is type-checked. TypeScript reads your code and reports errors if you pass a string where a number is expected, call a function that doesn't exist on an object, or forget to handle a value that might be `null`.
+
+### Running a Full Type Check
+
+Your editor shows TypeScript errors inline as you type, but you can also run a full project-wide type check from the terminal:
+
+```bash
+npx tsc --noEmit
+```
+
+The `--noEmit` flag tells TypeScript to check for errors without producing output files — perfect for a quick sanity check before committing or deploying.
+
+```bash
+# Clean output means no errors
+$ npx tsc --noEmit
+$
+
+# Errors look like this
+app/components/UserCard.tsx:12:18 - error TS2345: Argument of type 'string' is
+not assignable to parameter of type 'number'.
+```
+
+### Why TypeScript Matters
+
+TypeScript might feel like extra work at first — writing types, fixing errors the editor highlights. But it pays off quickly:
+
+- **Autocomplete gets smarter.** Your editor knows exactly what properties are available on every object.
+- **Refactoring becomes safe.** Rename a function and TypeScript instantly shows everywhere it's used incorrectly.
+- **Bugs die before runtime.** An error TypeScript catches in your editor can't reach your users.
+
+Lean into TypeScript from the start, and you'll spend far less time debugging.
+
+<Tip>
+  Treat linting and type errors as real errors, not suggestions you can ignore until later. A project that has "just a few lint warnings" tends to accumulate more over time until the signal-to-noise ratio makes the tool useless. Fix errors as they appear — it takes ten seconds now and saves hours later.
+</Tip>
+
+## What's Next
+
+<Card title="AI Assistants" icon="robot" href="tools/ai-assistants">
+  Your tooling is solid. Now learn how to use AI assistants effectively as a Next.js developer — and how to avoid the traps that trip up beginners.
+</Card>

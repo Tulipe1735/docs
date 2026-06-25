@@ -1,21 +1,11 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
-  "name": "Next.js Course",
+  "projectType": "saas",
+  "projectName": "Next.js Course",
+  "projectDescription": "A beginner-friendly, hands-on course teaching Next.js from scratch with professional tools and real-world project workflows.",
   "theme": "almond",
-  "logo": {
-    "light": "https://media.brand.dev/5d92bedf-003c-426e-a6d4-8d9d15f370a7.svg",
-    "dark": "https://media.brand.dev/17c35107-0305-412f-968a-105d4217c0cb.svg"
-  },
-  "favicon": "https://media.brand.dev/50cb4fff-9fb6-45ba-877e-149a8e6d5966.png",
-  "colors": {
-    "primary": "#47ca75",
-    "light": "#040404",
-    "dark": "#ffffff"
-  },
-  "font": {
-    "headings": { "family": "Inter" },
-    "body": { "family": "Inter" }
-  },
+  "primaryColor": "#47ca75",
+  "lightColor": "#040404",
+  "darkColor": "#ffffff",
   "navigation": {
     "tabs": [
       {
@@ -91,5 +81,16 @@
         ]
       }
     ]
-  }
+  },
+  "keyFeatures": [
+    "Beginner-friendly structure starting from zero",
+    "Professional tooling and workflow from day one",
+    "Hands-on learning with real code examples",
+    "Covers Next.js App Router and modern patterns",
+    "Each topic includes explanations, examples, and exercises",
+    "AI-assisted learning guidance",
+    "Git & GitHub version control integration",
+    "Deployment with Vercel"
+  ],
+  "publicApiSurface": []
 }

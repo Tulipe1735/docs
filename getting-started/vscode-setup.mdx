@@ -1,0 +1,103 @@
+---
+title: "Setting Up VS Code for Next.js Development"
+sidebarTitle: "VS Code Setup"
+description: "Configure Visual Studio Code with the right extensions and settings for a smooth Next.js workflow, including Prettier, ESLint, and Tailwind IntelliSense."
+---
+
+A good code editor doesn't just display text — it catches your mistakes, formats your code automatically, and gives you intelligent suggestions as you type. Visual Studio Code (VS Code) is the most popular editor in the web development world, and it has exceptional support for JavaScript, TypeScript, and React. Setting it up correctly from the start will save you hours of frustration down the road.
+
+## Download and Install VS Code
+
+Head to [code.visualstudio.com](https://code.visualstudio.com) and download the installer for your operating system. VS Code is free, open-source, and available for macOS, Windows, and Linux.
+
+Run the installer and follow the prompts. On Windows, check the option to **"Add to PATH"** during installation — this lets you open VS Code from the terminal by typing `code .`.
+
+<Tip>
+  Once VS Code is installed, you can open any project folder directly from your terminal by navigating into the folder and running `code .`. You'll use this constantly.
+</Tip>
+
+## Recommended Extensions
+
+Extensions are plugins that add functionality to VS Code. Install these to get the best Next.js development experience:
+
+<CardGroup cols={2}>
+  <Card title="ES7+ React/Redux Snippets" icon="bolt">
+    Provides shorthand shortcuts for creating React components, hooks, and more. Type `rafce` and press Tab to generate a full component in seconds.
+  </Card>
+  <Card title="Prettier – Code Formatter" icon="wand-magic-sparkles">
+    Automatically formats your code every time you save. Keeps your files clean and consistent without any manual effort.
+  </Card>
+  <Card title="ESLint" icon="triangle-exclamation">
+    Highlights code quality issues and potential bugs as you write. Next.js comes with ESLint pre-configured, and this extension surfaces those warnings directly in your editor.
+  </Card>
+  <Card title="Tailwind CSS IntelliSense" icon="palette">
+    Provides autocomplete, syntax highlighting, and hover previews for Tailwind CSS class names. Highly recommended if you're using Tailwind (and this course does).
+  </Card>
+  <Card title="Auto Rename Tag" icon="tags">
+    When you rename an opening HTML or JSX tag, the matching closing tag updates automatically. Small but saves a surprising amount of time.
+  </Card>
+  <Card title="TypeScript (Built-in)" icon="code">
+    VS Code ships with built-in TypeScript support. No extension needed — it just works with your `.tsx` files.
+  </Card>
+</CardGroup>
+
+### Installing an Extension
+
+1. Open VS Code and click the **Extensions** icon in the left sidebar (or press `Ctrl+Shift+X` / `Cmd+Shift+X`)
+2. Type the extension name in the search bar
+3. Click **Install** on the correct result
+
+Repeat this for each extension listed above.
+
+## Configure Your Settings
+
+VS Code's default settings are fine for general use, but a few tweaks will make your Next.js workflow significantly smoother. The two most important settings are **format on save** and the **default formatter**.
+
+### Open Your Settings File
+
+Press `Ctrl+Shift+P` (Windows/Linux) or `Cmd+Shift+P` (macOS) to open the Command Palette. Type `Open User Settings JSON` and select it. This opens your `settings.json` file directly.
+
+Add the following configuration:
+
+```json
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
+}
+```
+
+Save the file. From now on, every time you save a `.tsx`, `.ts`, `.js`, or `.css` file, Prettier will automatically format it for you.
+
+<Note>
+  If VS Code asks you which formatter to use when you first save a file, select **Prettier - Code formatter** and choose **"Always use for this file type"**. Alternatively, the `defaultFormatter` setting above handles this automatically.
+</Note>
+
+### What These Settings Do
+
+| Setting | Value | Effect |
+|---|---|---|
+| `editor.formatOnSave` | `true` | Runs Prettier every time you hit Save |
+| `editor.defaultFormatter` | `"esbenp.prettier-vscode"` | Tells VS Code to use Prettier (not any other formatter) |
+
+## Using the Integrated Terminal
+
+One of VS Code's most useful features is its **integrated terminal** — a full command-line interface built right into your editor. You can run your development server, install packages, and use Git without ever switching windows.
+
+**To open the integrated terminal:**
+- Press `` Ctrl+` `` (backtick) on Windows/Linux
+- Press `` Ctrl+` `` on macOS
+- Or go to **View → Terminal** in the menu bar
+
+You can open multiple terminal tabs, split the terminal pane, and even run different shells side by side. When you're running `npm run dev` in one tab and need to run another command, just click the `+` icon to open a second terminal — your dev server keeps running in the background.
+
+<Tip>
+  Get into the habit of using the integrated terminal instead of a separate terminal app. Keeping everything inside VS Code means fewer windows to manage and faster context-switching.
+</Tip>
+
+## What's Next?
+
+Your editor is configured and ready to go. Now it's time to create your very first Next.js application and see everything come together.
+
+<Card title="Create Your First Next.js App →" icon="rocket" href="getting-started/first-nextjs-app">
+  Use `create-next-app` to scaffold a new project, start the development server, and see your first page in the browser.
+</Card>

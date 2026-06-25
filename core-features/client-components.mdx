@@ -1,0 +1,169 @@
+---
+title: "Client Components in Next.js App Router"
+sidebarTitle: "Client Components"
+description: "Add interactivity to your Next.js app with Client Components — use state, effects, event handlers, and browser APIs with the use client directive."
+---
+
+Client Components run in the browser, just like components did in traditional React apps. You need them whenever your UI has to respond to user input — a button click, a form submission, a dropdown toggling open. The key difference from the App Router's default is that you have to explicitly opt a file into client-side rendering by adding a special directive at the very top.
+
+## The `'use client'` Directive
+
+Add `'use client'` as the first line of any file that needs browser features. Everything exported from that file — and everything it imports — becomes part of the client bundle.
+
+```tsx
+'use client'
+
+import { useState } from 'react'
+
+export function Counter() {
+  const [count, setCount] = useState(0)
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+    </div>
+  )
+}
+```
+
+<Note>
+  `'use client'` is a file-level directive, not a component-level one. It marks a **boundary** between server and client code. Every module imported by a `'use client'` file is also bundled for the client, so keep those imports lean.
+</Note>
+
+## When to Use Client Components
+
+Reach for a Client Component when your component needs any of the following:
+
+<CardGroup cols={2}>
+  <Card title="State & Reducers" icon="sliders">
+    `useState`, `useReducer` — anything that changes over time in response to user actions.
+  </Card>
+  <Card title="Side Effects" icon="arrow-right-arrow-left">
+    `useEffect` and `useLayoutEffect` for subscriptions, timers, or syncing with external systems after render.
+  </Card>
+  <Card title="Event Handlers" icon="computer-mouse">
+    `onClick`, `onChange`, `onSubmit` — any interaction that the user triggers directly.
+  </Card>
+  <Card title="Browser APIs" icon="window-restore">
+    `window`, `document`, `localStorage`, `navigator`, `IntersectionObserver`, and other web platform APIs.
+  </Card>
+</CardGroup>
+
+## The Composition Pattern
+
+One of the most important mental models in the App Router is that **Server Components can render Client Components**. You write the page-level data fetching in a Server Component, then drop in Client Components exactly where interactivity is needed.
+
+```tsx
+// app/page.tsx (Server Component — no directive needed)
+import { Counter } from '@/components/Counter'  // Client Component
+
+export default function HomePage() {
+  return (
+    <main>
+      <h1>My App</h1>
+      <Counter />  {/* Client Component inside Server Component */}
+    </main>
+  )
+}
+```
+
+`HomePage` runs on the server and its code stays there. `Counter` is bundled for the browser because it has `'use client'`. Next.js handles the boundary automatically — you just import and render as usual.
+
+<Warning>
+  The reverse is not directly possible: you cannot import a Server Component into a Client Component file. If you try, Next.js will treat the imported component as a Client Component too, losing the server-only benefits. Instead, pass Server Components as **children** or **props** to Client Components when you need to nest them.
+</Warning>
+
+### Passing Server Content as Children
+
+When a Client Component needs to wrap server-rendered content, pass it as `children`:
+
+```tsx
+// components/Modal.tsx (Client Component)
+'use client'
+
+import { useState } from 'react'
+
+export function Modal({ children }: { children: React.ReactNode }) {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <>
+      <button onClick={() => setOpen(true)}>Open</button>
+      {open && <div>{children}</div>}
+    </>
+  )
+}
+```
+
+```tsx
+// app/page.tsx (Server Component)
+import { Modal } from '@/components/Modal'
+
+export default async function Page() {
+  const data = await fetchSomeData()  // runs on the server
+
+  return (
+    <Modal>
+      <p>{data.description}</p>  {/* server-rendered content passed as children */}
+    </Modal>
+  )
+}
+```
+
+## Best Practice: Push `'use client'` to the Leaves
+
+<Tip>
+  The closer to the bottom of the component tree you place `'use client'`, the less JavaScript the browser has to download. If only a single button on a page needs `onClick`, extract just that button into its own Client Component file. The rest of the page stays server-rendered and contributes zero JavaScript to the bundle.
+
+  Think of `'use client'` like a spotlight: shine it only on the parts of the UI that genuinely need the browser.
+</Tip>
+
+A practical example — instead of marking an entire page client-side just for one interactive element:
+
+```tsx
+// ❌ Avoid — the whole page becomes a Client Component
+'use client'
+import { useState } from 'react'
+
+export default function BlogPost() {
+  const [liked, setLiked] = useState(false)
+  // ... lots of server-renderable content
+}
+```
+
+Extract only the interactive piece:
+
+```tsx
+// ✅ Better — only the button is a Client Component
+// components/LikeButton.tsx
+'use client'
+import { useState } from 'react'
+
+export function LikeButton() {
+  const [liked, setLiked] = useState(false)
+  return <button onClick={() => setLiked(true)}>{liked ? '❤️' : '🤍'}</button>
+}
+```
+
+```tsx
+// app/blog/[slug]/page.tsx — stays a Server Component
+import { LikeButton } from '@/components/LikeButton'
+
+export default async function BlogPost({ params }: { params: { slug: string } }) {
+  const post = await getPost(params.slug)
+  return (
+    <article>
+      <h1>{post.title}</h1>
+      <p>{post.content}</p>
+      <LikeButton />
+    </article>
+  )
+}
+```
+
+## What's Next
+
+<Card title="API Routes" icon="code" href="core-features/api-routes">
+  Learn how to build backend API endpoints directly inside your Next.js app using Route Handlers.
+</Card>

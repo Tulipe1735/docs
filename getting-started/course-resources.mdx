@@ -1,0 +1,143 @@
+---
+title: "Course Resources: Every Link You'll Ever Need"
+sidebarTitle: "Course Resources"
+description: "A curated reference of official docs, tools, AI assistants, and community links for this Next.js course — bookmark this page and return to it often."
+---
+
+Learning to build with Next.js means you'll constantly be looking things up — and that's a good thing. Professional developers do it every day. This page collects every resource you'll need throughout this course in one place. Bookmark it now so you can find it quickly when you're in the middle of a problem and need a reference fast.
+
+<Note>
+  This handbook is kept up to date alongside the course. If you watch a video lesson and the interface or commands look slightly different, check this page first — you'll find the current, correct version of any instructions here.
+</Note>
+
+## Official Documentation
+
+These are the authoritative sources of truth. When in doubt, go here:
+
+<CardGroup cols={2}>
+  <Card title="Next.js Docs" icon="book" href="https://nextjs.org/docs">
+    The official Next.js documentation. Covers everything from routing and rendering to deployment and API routes. The App Router docs are what you want.
+  </Card>
+  <Card title="React Docs" icon="atom" href="https://react.dev">
+    The official React documentation, rebuilt from scratch with modern examples. Essential for understanding components, hooks, and state.
+  </Card>
+  <Card title="Node.js" icon="node-js" href="https://nodejs.org">
+    The official Node.js site. Download the LTS installer and find version information here.
+  </Card>
+  <Card title="VS Code" icon="code" href="https://code.visualstudio.com">
+    Download VS Code and browse its extension marketplace. Also contains excellent documentation on editor features.
+  </Card>
+  <Card title="Tailwind CSS Docs" icon="palette" href="https://tailwindcss.com/docs">
+    The official Tailwind CSS documentation. Use the search bar — it's the fastest way to find a utility class.
+  </Card>
+  <Card title="Vercel" icon="triangle" href="https://vercel.com">
+    The platform built by the creators of Next.js. You'll deploy your projects here at the end of the course. Free tier is more than enough.
+  </Card>
+</CardGroup>
+
+## Quick Reference Links
+
+When you need something specific fast, these links cut straight to the right place:
+
+| Resource | Link | What It's For |
+|---|---|---|
+| Next.js App Router reference | [nextjs.org/docs/app](https://nextjs.org/docs/app) | Routing, layouts, pages, loading states |
+| Next.js API routes | [nextjs.org/docs/app/building-your-application/routing/route-handlers](https://nextjs.org/docs/app/building-your-application/routing/route-handlers) | Building API endpoints |
+| React hooks reference | [react.dev/reference/react](https://react.dev/reference/react) | `useState`, `useEffect`, and more |
+| Tailwind class search | [tailwindcss.com/docs](https://tailwindcss.com/docs) | Find any utility class quickly |
+| TypeScript handbook | [typescriptlang.org/docs](https://www.typescriptlang.org/docs) | Types, interfaces, generics |
+
+## Using AI Assistants When You're Stuck
+
+AI tools like ChatGPT and Claude are genuinely useful learning companions for Next.js. They're especially good at explaining error messages, suggesting fixes for small bugs, and generating code examples you can study. The key is knowing how to ask.
+
+<Tip>
+  Always tell the AI which version of Next.js you're using and whether you're using the App Router. Next.js changed significantly between versions, and a vague question might get you an outdated answer.
+</Tip>
+
+### Effective Prompt Patterns
+
+Here are prompt templates that get reliable, course-relevant answers:
+
+**For understanding a concept:**
+```
+I'm learning Next.js 14 with the App Router. Can you explain how [concept] works 
+in simple terms, with a short code example using TypeScript?
+```
+
+**For debugging an error:**
+```
+I'm using Next.js 14 App Router with TypeScript. I'm getting this error:
+
+[paste your full error message here]
+
+Here's the relevant code:
+
+[paste your code here]
+
+What's causing this and how do I fix it?
+```
+
+**For understanding what code does:**
+```
+I'm a beginner learning Next.js. Can you walk me through what this code does, 
+line by line, in plain English?
+
+[paste your code here]
+```
+
+**For generating an example:**
+```
+Show me a simple Next.js 14 App Router example of [feature] using TypeScript 
+and Tailwind CSS. Keep it beginner-friendly.
+```
+
+<Warning>
+  AI assistants can be confidently wrong, especially about recent framework changes. Always cross-reference AI-generated code with the official Next.js docs before trusting it in your project.
+</Warning>
+
+### Recommended AI Tools
+
+| Tool | Link | Notes |
+|---|---|---|
+| ChatGPT | [chat.openai.com](https://chat.openai.com) | GPT-4 is excellent for code explanation |
+| Claude | [claude.ai](https://claude.ai) | Great for longer code reviews and explanations |
+| GitHub Copilot | [github.com/features/copilot](https://github.com/features/copilot) | In-editor AI autocomplete for VS Code |
+
+## Community Resources
+
+Getting stuck is normal. The Next.js community is large, active, and beginner-friendly. Here's where to find help:
+
+<CardGroup cols={2}>
+  <Card title="Next.js GitHub Discussions" icon="github" href="https://github.com/vercel/next.js/discussions">
+    Ask questions, share projects, and browse answers from the broader Next.js community. Searchable — your question may already be answered.
+  </Card>
+  <Card title="Next.js Discord" icon="discord" href="https://nextjs.org/discord">
+    The official Next.js Discord server. Great for real-time help. The `#help` channel is active and welcoming to beginners.
+  </Card>
+  <Card title="Stack Overflow" icon="stack-overflow" href="https://stackoverflow.com/questions/tagged/next.js">
+    Tagged Next.js questions. Best for specific technical issues where you want a structured answer.
+  </Card>
+  <Card title="Vercel Community" icon="comments" href="https://community.vercel.com">
+    Vercel's official community forum. Useful for deployment-related questions.
+  </Card>
+</CardGroup>
+
+### Tips for Getting Good Help
+
+When posting a question in any community forum, include:
+
+1. **Your Next.js version** — run `npx next --version` to check
+2. **The full error message** — copy it exactly, don't paraphrase
+3. **The relevant code** — a minimal snippet that reproduces the issue
+4. **What you've already tried** — shows you've put in effort and helps people give better answers
+
+## Staying Up to Date
+
+Next.js ships updates regularly. Here are the best ways to keep up with what's changing:
+
+- **[Next.js Blog](https://nextjs.org/blog)** — official release notes and feature announcements
+- **[Vercel Changelog](https://vercel.com/changelog)** — platform and tooling updates
+- **[@nextjs on X (Twitter)](https://twitter.com/nextjs)** — quick updates and community highlights
+
+You don't need to follow every change while you're learning. Focus on finishing this course first — the foundations you build here will make it easy to pick up new features as they come.

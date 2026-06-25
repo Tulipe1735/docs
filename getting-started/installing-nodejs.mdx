@@ -1,0 +1,160 @@
+---
+title: "Installing Node.js for Next.js Development"
+sidebarTitle: "Installing Node.js"
+description: "Install Node.js on macOS, Windows, or Linux so you can run Next.js. Includes version requirements, package manager options, and verification steps."
+---
+
+Before you can create a single Next.js project, you need Node.js installed on your machine. Node.js is the JavaScript runtime that executes your code outside of the browser — it's what powers the Next.js development server, runs your build process, and lets you use `npm` to install packages. Without it, nothing works.
+
+## Version Requirement
+
+Next.js 14+ requires **Node.js 18.17.0 or later**. If you have an older version installed, you'll need to upgrade before continuing.
+
+<Info>
+  Not sure if you already have Node.js? Open a terminal and run `node --version`. If you see `v18.17.0` or higher, you're good to go and can skip to the [verification step](#verify-your-installation) below.
+</Info>
+
+## Installation
+
+Choose the instructions for your operating system:
+
+<Tabs>
+  <Tab title="macOS">
+    ### Recommended: Use nvm (Node Version Manager)
+
+    `nvm` lets you install multiple versions of Node.js and switch between them easily. It's the preferred approach for developers who work on multiple projects.
+
+    **Step 1 — Install nvm:**
+
+    Open Terminal and run the following command:
+
+    ```bash
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+    ```
+
+    **Step 2 — Restart your terminal**, then verify nvm is available:
+
+    ```bash
+    nvm --version
+    ```
+
+    **Step 3 — Install the latest LTS version of Node.js:**
+
+    ```bash
+    nvm install --lts
+    nvm use --lts
+    ```
+
+    ---
+
+    ### Alternative: Download from nodejs.org
+
+    If you'd rather not use nvm, download the macOS installer directly from [nodejs.org](https://nodejs.org). Choose the **LTS (Long Term Support)** version — it's the most stable option and will always meet Next.js's version requirement.
+
+    Run the `.pkg` installer and follow the prompts. Node.js and npm will be installed automatically.
+  </Tab>
+  <Tab title="Windows">
+    ### Recommended: Use nvm-windows
+
+    `nvm-windows` is a Windows-compatible version manager that works similarly to nvm on macOS and Linux.
+
+    **Step 1 — Download the installer:**
+
+    Go to the [nvm-windows releases page](https://github.com/coreybutler/nvm-windows/releases) and download `nvm-setup.exe` from the latest release.
+
+    **Step 2 — Run the installer** and follow the setup wizard. Accept the default installation paths.
+
+    **Step 3 — Open a new Command Prompt or PowerShell window**, then install Node.js:
+
+    ```bash
+    nvm install lts
+    nvm use lts
+    ```
+
+    ---
+
+    ### Alternative: Download from nodejs.org
+
+    Download the Windows installer (`.msi`) from [nodejs.org](https://nodejs.org). Choose the **LTS** version. Run the installer and follow the prompts — make sure the option to **add Node.js to PATH** is checked.
+
+    <Tip>
+      If you're on Windows, consider using **Windows Terminal** combined with **WSL 2** (Windows Subsystem for Linux) for a smoother development experience. The Linux tab instructions will then apply to you.
+    </Tip>
+  </Tab>
+  <Tab title="Linux">
+    ### Recommended: Use nvm
+
+    `nvm` works on all major Linux distributions and is the cleanest way to manage Node.js versions.
+
+    **Step 1 — Install nvm:**
+
+    ```bash
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+    ```
+
+    **Step 2 — Reload your shell configuration:**
+
+    ```bash
+    source ~/.bashrc
+    # or, if you use zsh:
+    source ~/.zshrc
+    ```
+
+    **Step 3 — Install the latest LTS version of Node.js:**
+
+    ```bash
+    nvm install --lts
+    nvm use --lts
+    ```
+
+    **Set it as your default** so it's available in every new terminal session:
+
+    ```bash
+    nvm alias default node
+    ```
+  </Tab>
+</Tabs>
+
+## Verify Your Installation
+
+Once Node.js is installed, confirm that both `node` and `npm` are available and meet the version requirements. Open a terminal and run:
+
+```bash
+node --version  # should print v18.17.0 or later
+npm --version   # should print 9.x or later
+```
+
+You should see output like this:
+
+```
+v20.11.0
+10.2.4
+```
+
+If either command says "command not found," close and reopen your terminal and try again. If it still doesn't work, revisit the installation steps for your OS above.
+
+<Warning>
+  If `node --version` prints a version below `v18.17.0`, you must upgrade before continuing. Using an outdated Node.js version will cause errors when you try to create a Next.js project.
+</Warning>
+
+## A Note on Package Managers
+
+When you install Node.js, you automatically get **npm** (Node Package Manager). npm is what you use to install libraries, run scripts, and manage your project's dependencies.
+
+This course uses **npm** in all examples, but you're welcome to use any of the popular alternatives:
+
+| Package Manager | Install Command | Notes |
+|---|---|---|
+| npm | Ships with Node.js | Used in this course |
+| pnpm | `npm install -g pnpm` | Faster, more disk-efficient |
+| yarn | `npm install -g yarn` | Popular in older projects |
+
+All three work with Next.js. The commands are slightly different (`npm run dev` vs `pnpm dev` vs `yarn dev`), but the concepts are identical. If you stick with npm, you'll never need to translate anything.
+
+## What's Next?
+
+You've got Node.js installed and verified. Now let's get your code editor set up so you have the best possible environment for writing Next.js code.
+
+<Card title="Set Up VS Code →" icon="code" href="getting-started/vscode-setup">
+  Install VS Code and configure the extensions and settings that make Next.js development fast and enjoyable.
+</Card>

@@ -1,0 +1,141 @@
+---
+title: "Optimized Images & Fonts in Next.js"
+sidebarTitle: "Images & Fonts"
+description: "Use Next.js built-in Image and Font components to automatically optimize images, eliminate layout shift, and self-host Google Fonts with no extra setup."
+---
+
+Slow images and font flashes are two of the most common performance problems on the web. Next.js ships with built-in solutions for both: the `<Image>` component handles everything from lazy loading to modern format conversion, while `next/font` eliminates font-related jank entirely — no third-party requests required.
+
+## The `<Image>` Component
+
+Replace every `<img>` tag in your project with Next.js's `<Image>` component imported from `next/image`. The API is intentionally similar to a regular `<img>` tag, but you must always supply `width` and `height` props.
+
+```tsx
+import Image from 'next/image'
+
+export function HeroSection() {
+  return (
+    <Image
+      src="/hero.jpg"
+      alt="Hero image"
+      width={1200}
+      height={600}
+      priority   // preload above-the-fold images
+    />
+  )
+}
+```
+
+<CardGroup cols={3}>
+  <Card title="Lazy Loading" icon="eye-slash">
+    Images below the fold are only loaded when the user scrolls near them — saving bandwidth automatically.
+  </Card>
+  <Card title="Modern Formats" icon="file-image">
+    Next.js converts images to WebP or AVIF on the fly, cutting file sizes by 30–50% without any extra work.
+  </Card>
+  <Card title="No Layout Shift" icon="table-columns">
+    Because you provide `width` and `height`, the browser reserves space upfront and the page never jumps.
+  </Card>
+</CardGroup>
+
+<Note>
+  Add `priority` to any image that appears **above the fold** (visible without scrolling). This tells Next.js to preload it eagerly, which improves your Largest Contentful Paint (LCP) score.
+</Note>
+
+## Remote Images
+
+By default, Next.js only optimizes images from your own project (`/public` folder). To use images from an external URL — like a CDN or stock photo service — you need to explicitly allow the hostname in `next.config.js`.
+
+```javascript
+// next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+    ],
+  },
+}
+module.exports = nextConfig
+```
+
+Then you can use remote URLs directly in the `src` prop:
+
+```tsx
+<Image
+  src="https://images.unsplash.com/photo-123?w=1200"
+  alt="A scenic landscape"
+  width={1200}
+  height={800}
+/>
+```
+
+<Warning>
+  Never add a wildcard hostname like `*` to `remotePatterns` in production. Only allowlist the specific domains you actually use — this prevents your image optimization endpoint from being abused.
+</Warning>
+
+## Google Fonts with `next/font`
+
+Adding Google Fonts the traditional way (a `<link>` tag in `<head>`) causes **FOUT** — Flash of Unstyled Text — because the browser has to wait for an external network request before the font loads. `next/font/google` solves this by downloading the font files at **build time** and self-hosting them alongside your app.
+
+```tsx
+// app/layout.tsx
+import { Inter, Roboto_Mono } from 'next/font/google'
+
+const inter = Inter({ subsets: ['latin'] })
+const robotoMono = Roboto_Mono({ subsets: ['latin'] })
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body className={inter.className}>{children}</body>
+    </html>
+  )
+}
+```
+
+<CardGroup cols={3}>
+  <Card title="No FOUT" icon="font">
+    Fonts are available immediately on load — no flash of unstyled text on first visit.
+  </Card>
+  <Card title="Self-Hosted" icon="server">
+    Font files are served from your own domain, so there are zero external network requests.
+  </Card>
+  <Card title="Privacy-Friendly" icon="shield">
+    Because no request is made to Google's servers at runtime, no user data is shared.
+  </Card>
+</CardGroup>
+
+<Tip>
+  The `subsets` option controls which character sets get included. Use `['latin']` for English-only sites to keep the font file small. Add `'latin-ext'` if you need accented characters for languages like French or Polish.
+</Tip>
+
+## Using a Local Font
+
+If you have a custom font file in your project, use `next/font/local` instead:
+
+```tsx
+import localFont from 'next/font/local'
+
+const myFont = localFont({
+  src: '../public/fonts/MyFont.woff2',
+  display: 'swap',
+})
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body className={myFont.className}>{children}</body>
+    </html>
+  )
+}
+```
+
+## What's Next
+
+<Card title="Environment Variables" icon="key" href="/practical/environment-variables">
+  Learn how to store API keys and secrets safely using environment variables — and how to keep them out of your source code.
+</Card>

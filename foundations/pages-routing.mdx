@@ -1,0 +1,155 @@
+---
+title: "Pages and Routing in Next.js App Router"
+sidebarTitle: "Pages & Routing"
+description: "Discover how Next.js turns your file system into a router — every page.tsx file you create automatically becomes a live URL in your app."
+---
+
+One of Next.js's most powerful ideas is that you don't need to configure a router. Instead, the file system **is** your router. The location of a `page.tsx` file inside the `app/` directory directly determines the URL where that page is accessible. No route config files, no manual registration — just create a file and the route exists.
+
+## How File-Based Routing Works
+
+Every route in your app corresponds to a folder inside `app/`, and each folder needs a `page.tsx` file to become a real, visitable URL. Here's how folder structure maps to URLs:
+
+```
+app/page.tsx              →  /
+app/about/page.tsx        →  /about
+app/blog/page.tsx         →  /blog
+app/blog/[slug]/page.tsx  →  /blog/anything
+```
+
+<Info>
+  Only files named `page.tsx` (or `page.jsx`, `page.js`) create routes. A folder without a `page.tsx` file won't generate a URL — it's invisible to the router, which is useful for grouping shared code.
+</Info>
+
+### Static Routes
+
+Static routes match a fixed URL. To create an `/about` page, you create the folder `app/about/` and add a `page.tsx` inside it.
+
+```
+app/
+├── page.tsx          →  /
+├── about/
+│   └── page.tsx      →  /about
+└── blog/
+    └── page.tsx      →  /blog
+```
+
+### Dynamic Routes
+
+Dynamic routes match any value in a URL segment. You create them by wrapping a folder name in square brackets — for example, `[slug]`. Whatever the user types in that URL segment becomes available to your page as a parameter.
+
+```
+app/blog/[slug]/page.tsx  →  /blog/hello-world
+                           →  /blog/my-second-post
+                           →  /blog/anything-at-all
+```
+
+You'll learn how to read these dynamic parameters in the Core Features section.
+
+## Creating Your First Page
+
+Creating a new page is a two-step process: make a folder, then add a `page.tsx` file inside it.
+
+<Steps>
+  <Step title="Create the folder">
+    Inside your `app/` directory, create a new folder with the name you want the route to have.
+
+    ```bash
+    mkdir app/about
+    ```
+  </Step>
+  <Step title="Add a page.tsx file">
+    Inside that folder, create a `page.tsx` file and export a default React component from it. The component name doesn't affect the URL — only the file's location matters.
+
+    ```tsx
+    // app/about/page.tsx
+    export default function AboutPage() {
+      return (
+        <main>
+          <h1>About Us</h1>
+          <p>Welcome to the about page.</p>
+        </main>
+      )
+    }
+    ```
+  </Step>
+  <Step title="Visit the route">
+    Start your development server with `npm run dev` and navigate to `http://localhost:3000/about`. Your new page is live.
+
+    ```bash
+    npm run dev
+    ```
+  </Step>
+</Steps>
+
+## The Anatomy of a Page Component
+
+Every page is just a React component — a function that returns JSX. The only requirement is that it must be the **default export** of the file. Here's a slightly more complete example:
+
+```tsx
+// app/blog/page.tsx
+export default function BlogPage() {
+  return (
+    <main>
+      <h1>Blog</h1>
+      <p>Read the latest articles below.</p>
+      <ul>
+        <li>My first post</li>
+        <li>Learning Next.js</li>
+      </ul>
+    </main>
+  )
+}
+```
+
+<Note>
+  You can name the component function anything you like — `BlogPage`, `Page`, `Blog`, or even just `default function()`. Convention is to use a descriptive PascalCase name that matches the route.
+</Note>
+
+## Navigating Between Pages
+
+Next.js provides a `<Link>` component for navigating between pages. Unlike a regular HTML `<a>` tag, `<Link>` does **client-side navigation** — it swaps the page content without doing a full browser reload, making transitions feel instant.
+
+```tsx
+import Link from 'next/link'
+
+export default function HomePage() {
+  return (
+    <main>
+      <h1>Home</h1>
+      <Link href="/about">Go to About</Link>
+    </main>
+  )
+}
+```
+
+<Tip>
+  Always use `<Link>` for internal navigation in Next.js. Reserve plain `<a>` tags only for links that go to external websites.
+</Tip>
+
+You'll take a deep dive into `<Link>`, programmatic navigation, and active link styling in the Practical section of this course.
+
+## Routing at a Glance
+
+<CardGroup cols={2}>
+  <Card title="Static Route" icon="file">
+    Create `app/contact/page.tsx` to get the `/contact` route. Straightforward and predictable.
+  </Card>
+  <Card title="Dynamic Route" icon="brackets-curly">
+    Create `app/products/[id]/page.tsx` to match `/products/1`, `/products/2`, and so on.
+  </Card>
+  <Card title="Nested Route" icon="folder-tree">
+    Create `app/settings/profile/page.tsx` to get the nested route `/settings/profile`.
+  </Card>
+  <Card title="Index Route" icon="house">
+    `app/page.tsx` is always your home page at `/`. Every subfolder can have its own index too.
+  </Card>
+</CardGroup>
+
+## What's Next
+
+You know how to create pages and routes. The next step is learning how to build the reusable pieces — components — that make up the content on those pages.
+
+<Card title="Components" icon="arrow-right" href="foundations/components">
+  Learn how to build reusable UI components and share them across your pages.
+</Card>

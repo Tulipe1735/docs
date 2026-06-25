@@ -1,0 +1,121 @@
+---
+title: "Using AI Assistants Effectively for Next.js"
+sidebarTitle: "AI Assistants"
+description: "Learn which AI tools help most when learning Next.js, how to write prompts that get accurate answers, and how to avoid the pitfalls that trip up beginners."
+---
+
+AI assistants have changed what it feels like to learn a new framework. Instead of spending an hour digging through Stack Overflow to decode a cryptic error, you can paste the message into a chat window and get a plain-English explanation in seconds. Think of AI as a 24/7 Next.js tutor that never gets tired of your questions — but one that occasionally makes things up. Knowing how to use it well, and when to double-check its output, is one of the most valuable skills you can develop as a modern developer.
+
+## The Best AI Tools for Next.js Development
+
+Different tools shine in different situations. Here's what each one is best at:
+
+<CardGroup cols={2}>
+  <Card title="ChatGPT" icon="comment-dots" href="https://chatgpt.com">
+    **Best for:** Explanations, debugging, and quick concept questions. GPT-4o handles most Next.js questions well and gives clear, structured answers. Great starting point for any question.
+  </Card>
+  <Card title="Claude" icon="sparkles" href="https://claude.ai">
+    **Best for:** Longer code tasks, refactoring entire files, and nuanced architectural questions. Claude tends to follow instructions precisely and handles large code pastes without losing context.
+  </Card>
+  <Card title="GitHub Copilot" icon="code" href="https://github.com/features/copilot">
+    **Best for:** Inline code suggestions inside VS Code. As you type, Copilot predicts what you're about to write and offers completions. Excellent for boilerplate and repetitive patterns.
+  </Card>
+  <Card title="Cursor" icon="arrow-pointer" href="https://cursor.sh">
+    **Best for:** AI-native development. Cursor is a VS Code fork with AI built deeply into the editor — you can highlight code and ask questions, or describe a change and have AI apply it directly to your file.
+  </Card>
+</CardGroup>
+
+You don't need all of these. Start with ChatGPT or Claude for questions, and add Copilot or Cursor to your editor when you're comfortable.
+
+## How to Ask AI About Next.js Effectively
+
+The quality of the answer depends almost entirely on the quality of the question. Vague questions get vague answers. Here's what to always include when asking about Next.js:
+
+<Steps>
+  <Step title="State the Next.js version and router type">
+    Next.js has two routing systems — the older Pages Router and the newer App Router (Next.js 13+). AI models have seen a lot of Pages Router content in their training data and will sometimes default to it. Always specify which one you're using.
+
+    ✅ *"I'm using Next.js 14 with App Router..."*
+
+    ❌ *"I'm using Next.js..."*
+  </Step>
+  <Step title="Include the full error message">
+    Don't summarize the error — paste the whole thing. Error messages contain codes, file paths, and stack traces that give the AI the context it needs to diagnose the problem accurately.
+
+    ✅ *"Here's the full error: `Error: async/await is not yet supported in Client Components...`"*
+
+    ❌ *"I'm getting an async error in my component"*
+  </Step>
+  <Step title="Share the relevant code">
+    Paste the component, function, or config file that's causing the issue. Without seeing your actual code, the AI can only guess at generic solutions.
+  </Step>
+</Steps>
+
+## Example Prompts That Work Well
+
+Copy and adapt these prompts for your own questions:
+
+```
+I'm using Next.js 14 with App Router. I'm getting this error:
+[paste the full error message here]
+
+Here's the component where it happens:
+[paste your code here]
+
+What's causing this and how do I fix it?
+```
+
+```
+I'm using Next.js 14 with App Router. Here's my Server Component.
+It seems to be re-fetching data on every request even though I expected
+it to be cached. What am I doing wrong?
+
+[paste your component code here]
+```
+
+```
+Show me how to add authentication to a Next.js 14 App Router project
+using NextAuth.js v5. I need protected routes and a sign-in page.
+```
+
+```
+What's the difference between Server Components and Client Components
+in Next.js 14 App Router? When should I use each one? Give me
+practical examples, not just definitions.
+```
+
+Notice the pattern: version, router type, specific goal, and — where relevant — your actual code. That context is what separates a useful answer from a generic one.
+
+## AI Limitations You Need to Know
+
+<Warning>
+  AI can confidently suggest Pages Router patterns when you're building with App Router — and it won't always warn you. Code that uses `getServerSideProps`, `getStaticProps`, `useRouter` from `next/router`, or `pages/` directory conventions belongs to the old routing system. If an AI suggestion includes any of those, double-check whether it applies to App Router before using it.
+</Warning>
+
+AI models have a training cutoff date, which means they may not know about the latest Next.js releases, API changes, or deprecations. Here's how to protect yourself:
+
+- **Verify against the official docs.** If AI tells you to use a particular API or configuration, check [nextjs.org/docs](https://nextjs.org/docs) to confirm it still works that way.
+- **Watch for hallucinated packages.** AI occasionally invents npm package names or configuration options that don't exist. If a package name looks unfamiliar, search for it on [npmjs.com](https://npmjs.com) before installing.
+- **Test the code.** Don't paste AI-generated code into your project and assume it works. Read through it, understand what it does, and run it.
+
+<Info>
+  When you're researching a Next.js topic, try adding "App Router" to your search query — both in AI chats and regular web searches. It filters out the significant volume of Pages Router content that still dominates older tutorials and Stack Overflow answers.
+</Info>
+
+## AI vs. Actually Learning
+
+AI can write working code for you, but that creates a trap: you can ship features you don't understand, and then you're helpless when something breaks. The goal of this course is for you to *understand* Next.js — AI is a tool to help you get there faster, not to skip the journey.
+
+Use AI to:
+- Explain concepts you've just read about in different words
+- Help you understand an error, not just fix it
+- Generate a starting point you then read, understand, and modify
+- Answer "why" questions — not just "how"
+
+The developers who get the most value from AI are the ones who already understand the fundamentals. The fundamentals are what you're building in this course.
+
+## What's Next
+
+<Card title="Course Summary" icon="graduation-cap" href="next-steps/course-summary">
+  You've set up your full professional toolchain. Head to the course summary for a recap of everything you've learned and guidance on where to go next.
+</Card>

@@ -1,0 +1,141 @@
+---
+title: "Create and Run Your First Next.js Application"
+sidebarTitle: "First Next.js App"
+description: "Scaffold your first Next.js project with create-next-app, answer the setup prompts, start the dev server, and see your app live at localhost:3000."
+---
+
+Everything you've set up so far — Node.js, VS Code, and your extensions — has been leading to this moment. In this section, you'll create a real Next.js project from scratch, start the development server, and open your first page in the browser. The whole process takes less than five minutes.
+
+## The `create-next-app` Tool
+
+Next.js ships with an official scaffolding tool called `create-next-app`. It sets up a complete, properly configured project in a single command — TypeScript, ESLint, Tailwind CSS, and the App Router all included. You don't need to configure any of this manually.
+
+<Steps>
+
+  <Step title="Open Your Terminal">
+    Open your terminal. If you're using VS Code, press `` Ctrl+` `` (or `` Cmd+` `` on macOS) to open the integrated terminal.
+
+    Navigate to the folder where you want to create your project. Your home directory or a dedicated `projects/` folder works great:
+
+    ```bash
+    cd ~/projects
+    ```
+
+    <Tip>
+      If that folder doesn't exist yet, create it first with `mkdir ~/projects`.
+    </Tip>
+  </Step>
+
+  <Step title="Run create-next-app">
+    Run the following command to scaffold your project:
+
+    ```bash
+    npx create-next-app@latest my-first-app
+    ```
+
+    `npx` runs the `create-next-app` package directly without installing it globally. The `@latest` tag ensures you always get the most recent version.
+
+    The tool will ask you a series of setup questions. Use the answers below — they match what this course teaches:
+
+    ```
+    What is your project named? my-first-app
+    Would you like to use TypeScript? Yes
+    Would you like to use ESLint? Yes
+    Would you like to use Tailwind CSS? Yes
+    Would you like your code inside a `src/` directory? No
+    Would you like to use App Router? Yes
+    Would you like to customize the import alias? No
+    ```
+
+    Press **Enter** to confirm each answer. `create-next-app` will then install all the necessary dependencies — this usually takes 30–60 seconds depending on your internet speed.
+
+    <Info>
+      You can navigate these prompts with the arrow keys and press Enter to select. If you accidentally select the wrong option, press `Ctrl+C` to cancel and start over — it's just a scaffold, nothing is saved yet.
+    </Info>
+  </Step>
+
+  <Step title="Open the Project in VS Code">
+    Once the installation finishes, move into your new project folder:
+
+    ```bash
+    cd my-first-app
+    ```
+
+    Then open it in VS Code:
+
+    ```bash
+    code .
+    ```
+
+    VS Code will open the project. You'll see a file tree on the left with folders like `app/`, `public/`, and files like `package.json` and `tailwind.config.ts`. Don't worry about what all of these do just yet — you'll learn the structure in the next section.
+  </Step>
+
+  <Step title="Start the Development Server">
+    Back in your terminal (or the VS Code integrated terminal), start the development server:
+
+    ```bash
+    npm run dev
+    ```
+
+    You should see output like this:
+
+    ```
+    > my-first-app@0.1.0 dev
+    > next dev
+
+      ▲ Next.js 14.x.x
+      - Local:        http://localhost:3000
+      - Environments: .env.local
+
+     ✓ Starting...
+     ✓ Ready in 2.1s
+    ```
+
+    The `✓ Ready` message means your app is running. The development server watches your files for changes and updates the browser automatically.
+
+    <Note>
+      Leave this terminal tab running the entire time you're working on your project. To run other commands (like installing packages), open a second terminal tab with `+` in VS Code.
+    </Note>
+  </Step>
+
+  <Step title="Open Your App in the Browser">
+    Open your web browser and go to:
+
+    ```
+    http://localhost:3000
+    ```
+
+    You'll see the **default Next.js welcome page** — a polished starter page with the Next.js logo, links to the documentation, and some example cards.
+
+    Congratulations — you're running a real Next.js application on your own machine.
+  </Step>
+
+</Steps>
+
+## What You're Looking At
+
+The page at `localhost:3000` is rendered by the file `app/page.tsx` in your project. Open that file in VS Code and you'll see a large component with a lot of JSX. Don't be overwhelmed — this is just the default starter template. You'll replace all of it soon enough.
+
+The important things to understand right now:
+
+- **`localhost:3000`** is your app running locally on your machine — only you can see it
+- **The development server** (`npm run dev`) must be running for the page to load
+- **Fast Refresh** means any change you save in VS Code will appear in the browser almost instantly — no manual refresh needed
+
+## Try Making a Change
+
+Let's verify that Fast Refresh is working. In VS Code, open `app/page.tsx`. Find the word "Get started" somewhere in the JSX and change it to something else — your name, a greeting, anything. Save the file with `Ctrl+S` (or `Cmd+S`).
+
+Switch back to your browser. Your change appears in under a second, without you pressing refresh. That instant feedback loop is one of the things that makes Next.js development so enjoyable.
+
+<Warning>
+  If you stop the development server (by pressing `Ctrl+C` in the terminal), your app will go offline and `localhost:3000` will stop working. Run `npm run dev` again whenever you want to continue working.
+</Warning>
+
+## What's Next?
+
+You've created and run your first Next.js app. Now it's time to understand what all those files and folders actually mean.
+
+<Card title="Explore the Project Structure →" icon="folder-open" href="foundations/project-structure">
+  Learn what every file and folder in your new Next.js project does and how they all fit together.
+</Card>

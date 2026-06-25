@@ -1,0 +1,144 @@
+---
+title: "API Routes with Route Handlers in Next.js"
+sidebarTitle: "API Routes"
+description: "Build backend API endpoints inside your Next.js app using Route Handlers — handle GET, POST, and other HTTP methods with NextRequest and NextResponse."
+---
+
+Route Handlers let you build a real backend API without leaving your Next.js project. Instead of maintaining a separate Express server, you create `route.ts` files inside the `app/` directory and Next.js turns them into HTTP endpoints that live alongside your pages. They support all standard HTTP methods and have full access to the incoming request and outgoing response.
+
+## Creating Your First Route
+
+To create an API endpoint, add a `route.ts` file to any folder inside `app/`. The folder path becomes the URL path. Export a named function matching the HTTP method you want to handle.
+
+```typescript
+// app/api/hello/route.ts
+import { NextResponse } from 'next/server'
+
+export async function GET() {
+  return NextResponse.json({ message: 'Hello from Next.js API!' })
+}
+```
+
+Start your dev server and visit `http://localhost:3000/api/hello` in your browser or with a tool like Postman — you'll see the JSON response immediately.
+
+<Note>
+  By convention, API routes live under `app/api/`, but that's just a folder name — you can place a `route.ts` file anywhere in `app/`. The URL is determined entirely by the folder structure.
+</Note>
+
+## Handling POST Requests
+
+For methods that include a request body (POST, PUT, PATCH), Next.js gives you a `NextRequest` object with helpers to read the incoming data.
+
+```typescript
+// app/api/users/route.ts
+import { NextRequest, NextResponse } from 'next/server'
+
+export async function POST(request: NextRequest) {
+  const body = await request.json()
+  const { name, email } = body
+
+  // Save to database here...
+
+  return NextResponse.json(
+    { message: 'User created', user: { name, email } },
+    { status: 201 }
+  )
+}
+```
+
+The second argument to `NextResponse.json()` is a response init object where you set the HTTP status code. `201 Created` is the conventional status for a successful resource creation.
+
+## Handling Multiple HTTP Methods
+
+You can export multiple method handlers from the same `route.ts` file. Next.js automatically routes each request to the correct handler based on the HTTP method.
+
+```typescript
+// app/api/posts/route.ts
+import { NextRequest, NextResponse } from 'next/server'
+
+export async function GET() {
+  const posts = await db.post.findMany()
+  return NextResponse.json(posts)
+}
+
+export async function POST(request: NextRequest) {
+  const { title, content } = await request.json()
+  const post = await db.post.create({ data: { title, content } })
+  return NextResponse.json(post, { status: 201 })
+}
+```
+
+<Info>
+  Next.js supports all standard HTTP method exports: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `HEAD`, and `OPTIONS`. Any method that doesn't have a corresponding export returns a `405 Method Not Allowed` response automatically.
+</Info>
+
+## Returning Different Status Codes
+
+`NextResponse` gives you fine-grained control over the HTTP status code and headers in your response.
+
+```typescript
+// app/api/posts/[id]/route.ts
+import { NextRequest, NextResponse } from 'next/server'
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const post = await db.post.findUnique({ where: { id: params.id } })
+
+  if (!post) {
+    return NextResponse.json(
+      { error: 'Post not found' },
+      { status: 404 }
+    )
+  }
+
+  await db.post.delete({ where: { id: params.id } })
+  return new NextResponse(null, { status: 204 }) // 204 No Content
+}
+```
+
+<Steps>
+  <Step title="200 OK">
+    The default when you call `NextResponse.json(data)`. Use for successful GET requests.
+  </Step>
+  <Step title="201 Created">
+    Use after successfully creating a new resource with POST.
+  </Step>
+  <Step title="400 Bad Request">
+    Use when the client sends invalid or missing data. Always include an `error` field explaining what went wrong.
+  </Step>
+  <Step title="404 Not Found">
+    Use when a requested resource doesn't exist in your database.
+  </Step>
+  <Step title="500 Internal Server Error">
+    Next.js returns this automatically if your handler throws an unhandled error.
+  </Step>
+</Steps>
+
+## Reading Request Data
+
+`NextRequest` exposes everything you need to inspect an incoming request:
+
+```typescript
+export async function GET(request: NextRequest) {
+  // Read URL search params: /api/search?query=nextjs
+  const searchParams = request.nextUrl.searchParams
+  const query = searchParams.get('query')
+
+  // Read a request header
+  const authHeader = request.headers.get('authorization')
+
+  return NextResponse.json({ query, authHeader })
+}
+```
+
+<Tip>
+  **Route Handlers vs Server Actions** — Use Route Handlers when you need a public HTTP API that other clients (mobile apps, third-party services) can call. Use Server Actions when you're building form submissions or mutations that are only called from your own Next.js frontend. Server Actions are simpler to wire up for internal use, while Route Handlers give you a proper REST interface.
+</Tip>
+
+## What's Next
+
+<Card title="Dynamic Routes" icon="route" href="core-features/dynamic-routes">
+  Learn how to create pages and API endpoints that match dynamic URL segments like blog post slugs and user IDs.
+</Card>

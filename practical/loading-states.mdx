@@ -1,0 +1,126 @@
+---
+title: "Loading States & Suspense in Next.js"
+sidebarTitle: "Loading States"
+description: "Display instant loading UI while pages fetch data using loading.tsx, build skeleton screens, and use React Suspense to stream page sections independently."
+---
+
+Nobody likes staring at a blank screen while a page loads. Next.js makes it easy to show meaningful loading UI the moment a user navigates — even before any data has arrived — using a combination of the special `loading.tsx` file and React's Suspense API.
+
+## The `loading.tsx` File
+
+Create a `loading.tsx` file inside any route segment folder and Next.js will automatically display it while the page's data is loading. There's no extra wiring needed — it just works.
+
+```tsx
+// app/dashboard/loading.tsx
+export default function Loading() {
+  return (
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500" />
+    </div>
+  )
+}
+```
+
+<Note>
+  Under the hood, Next.js wraps the page component in a **React Suspense boundary** and uses your `loading.tsx` as the fallback. You get this behaviour for free without writing any Suspense code yourself.
+</Note>
+
+This means as soon as a user clicks a link to `/dashboard`, they immediately see the spinner — the layout renders instantly while the page's data fetching happens in the background.
+
+## Skeleton Loading UI
+
+A spinner is the simplest loading state, but a **skeleton screen** — placeholder shapes that mirror your real content — feels much more polished because users can see the structure of the page before the data arrives.
+
+```tsx
+export default function Loading() {
+  return (
+    <div className="grid grid-cols-3 gap-4">
+      {Array.from({ length: 6 }).map((_, i) => (
+        <div key={i} className="h-40 bg-gray-200 animate-pulse rounded-lg" />
+      ))}
+    </div>
+  )
+}
+```
+
+The `animate-pulse` Tailwind class gently fades the placeholders in and out, giving users a clear signal that content is on its way.
+
+<Tip>
+  Match the number and shape of your skeleton items to your real content. If your page shows 6 cards, show 6 skeleton cards. This prevents the jarring layout shift that happens when different amounts of content appear during and after loading.
+</Tip>
+
+## Using Suspense Manually
+
+`loading.tsx` applies to an **entire route segment**. If you want more granular control — loading only part of a page while the rest renders immediately — you can use React's `<Suspense>` component directly.
+
+```tsx
+import { Suspense } from 'react'
+import { PostList } from '@/components/PostList'
+
+export default function BlogPage() {
+  return (
+    <main>
+      <h1>Blog</h1>
+      <Suspense fallback={<p>Loading posts...</p>}>
+        <PostList />
+      </Suspense>
+    </main>
+  )
+}
+```
+
+Here the `<h1>Blog</h1>` heading renders instantly, while only the `<PostList>` component — which fetches data — shows the fallback until it's ready.
+
+<CardGroup cols={2}>
+  <Card title="loading.tsx" icon="file">
+    Covers the whole route segment. Great for full-page loading states. Zero configuration.
+  </Card>
+  <Card title="Suspense" icon="layer-group">
+    Wraps individual components. Lets different sections of a page load independently.
+  </Card>
+</CardGroup>
+
+## Nested Suspense Boundaries
+
+You can nest multiple `<Suspense>` boundaries on the same page, each with its own fallback. This lets different sections of a page stream in as they become ready:
+
+```tsx
+import { Suspense } from 'react'
+import { UserProfile } from '@/components/UserProfile'
+import { RecentActivity } from '@/components/RecentActivity'
+import { Recommendations } from '@/components/Recommendations'
+
+export default function DashboardPage() {
+  return (
+    <main>
+      <Suspense fallback={<div className="h-24 bg-gray-200 animate-pulse rounded-lg" />}>
+        <UserProfile />
+      </Suspense>
+
+      <Suspense fallback={<div className="h-48 bg-gray-200 animate-pulse rounded-lg" />}>
+        <RecentActivity />
+      </Suspense>
+
+      <Suspense fallback={<div className="h-32 bg-gray-200 animate-pulse rounded-lg" />}>
+        <Recommendations />
+      </Suspense>
+    </main>
+  )
+}
+```
+
+Each section renders as soon as its data is ready — they don't block each other.
+
+<Tip>
+  **Streaming with Suspense**: when you wrap components in `<Suspense>`, Next.js uses HTTP streaming to send each section of the page to the browser as it finishes rendering on the server. Users see content progressively rather than waiting for the slowest data source before anything appears.
+</Tip>
+
+<Info>
+  Streaming works automatically in the Next.js App Router whenever you use `<Suspense>` or `loading.tsx`. You don't need to enable anything — it's on by default as part of how the App Router handles server rendering.
+</Info>
+
+## What's Next
+
+<Card title="Git & GitHub" icon="code-branch" href="/tools/git-github">
+  Learn how to version-control your Next.js project with Git and collaborate with others using GitHub.
+</Card>
