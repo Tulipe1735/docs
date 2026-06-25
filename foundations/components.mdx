@@ -1,5 +1,5 @@
 ---
-title: "Building Reusable Components in Next.js"
+title: "Building and Organizing React Components in Next.js"
 sidebarTitle: "Components"
 description: "Learn how to build React components — the reusable building blocks of your UI — and organize them cleanly inside your Next.js project."
 ---
@@ -102,16 +102,16 @@ Props are the mechanism for passing data into a component. Every time you render
 Each instance is independent. Changing the `label` prop on one doesn't affect the others. This is what makes components so powerful — **one definition, infinite variations**.
 
 <CardGroup cols={2}>
-  <Card title="Required Props" icon="asterisk">
+  <Card title="Required Props" icon="asterisk" href="foundations/components">
     Props without a `?` are required. TypeScript will show an error at compile time if you forget to pass them.
   </Card>
-  <Card title="Optional Props" icon="question">
+  <Card title="Optional Props" icon="question" href="foundations/components">
     Props marked with `?` in the interface are optional. Always provide a sensible default behavior when they're absent.
   </Card>
-  <Card title="The @/ Alias" icon="at">
+  <Card title="The @/ Alias" icon="at" href="foundations/components">
     `@/` always resolves to your project root. Use it for all component imports to keep paths consistent.
   </Card>
-  <Card title="Default Exports vs Named Exports" icon="arrow-right-from-bracket">
+  <Card title="Default vs Named Exports" icon="arrow-right" href="foundations/components">
     Pages use default exports (`export default`). Components typically use named exports (`export function`) so you can export multiple from one file.
   </Card>
 </CardGroup>

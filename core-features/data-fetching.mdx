@@ -1,5 +1,5 @@
 ---
-title: "Data Fetching in the Next.js App Router"
+title: "Data Fetching and Caching in the Next.js App Router"
 sidebarTitle: "Data Fetching"
 description: "Fetch data directly in Server Components using async/await, and control caching with static, dynamic, and revalidating strategies."
 ---
@@ -92,10 +92,10 @@ Next.js caches `fetch` responses by default. You control caching behaviour throu
 The caching strategy you choose directly determines whether Next.js pre-renders the page or renders it on demand.
 
 <CardGroup cols={2}>
-  <Card title="Static Rendering" icon="bolt">
+  <Card title="Static Rendering" icon="bolt" href="https://nextjs.org/docs/app/building-your-application/rendering/server-components#static-rendering-default">
     Pages that use cached `fetch` calls (or no fetching at all) are rendered at **build time**. Next.js generates the HTML once and reuses it for every visitor. This is the fastest possible option because the response comes straight from a CDN edge.
   </Card>
-  <Card title="Dynamic Rendering" icon="arrows-rotate">
+  <Card title="Dynamic Rendering" icon="arrows-rotate" href="https://nextjs.org/docs/app/building-your-application/rendering/server-components#dynamic-rendering">
     Pages that use `{ cache: 'no-store' }`, read incoming request data (headers, cookies, search params), or use dynamic APIs like `cookies()` are rendered **on every request**. The HTML is generated fresh each time on the server.
   </Card>
 </CardGroup>

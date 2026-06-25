@@ -1,7 +1,7 @@
 ---
-title: "Why Next.js Dominates Modern Web Development"
+title: "Why Next.js Dominates Modern Web Development Today"
 sidebarTitle: "Why Next.js?"
-description: "Discover why Next.js has become the go-to React framework, what it adds over plain React, and how the App Router enables full-stack development in one codebase."
+description: "Discover why Next.js became the leading React framework, what it adds over plain React, and how the App Router unlocks full-stack development."
 ---
 
 Before you write your first line of Next.js code, it helps to understand why the framework exists, what problem it solves, and why so many teams — from scrappy startups to household-name companies — have standardised on it. This context will make everything that follows feel less arbitrary and more intentional.
@@ -22,26 +22,14 @@ Next.js answers all of these questions with well-designed, production-tested con
 
 ## What Next.js Adds on Top of React
 
-<CardGroup cols={2}>
-  <Card title="File-Based Routing" icon="folder-tree">
-    Create a file in the `app/` directory and it becomes a route. No router configuration required.
-  </Card>
-  <Card title="Server Rendering" icon="server">
-    Pages can be rendered on the server, improving performance and making your app indexable by search engines.
-  </Card>
-  <Card title="API Routes" icon="plug">
-    Write backend API endpoints inside the same project — no separate server needed.
-  </Card>
-  <Card title="Image Optimisation" icon="image">
-    The built-in `<Image>` component automatically resizes, compresses, and lazy-loads images.
-  </Card>
-  <Card title="Built-In CSS Support" icon="palette">
-    CSS Modules, Tailwind CSS, and CSS-in-JS solutions all work out of the box with zero config.
-  </Card>
-  <Card title="Automatic Code Splitting" icon="scissors">
-    Next.js only sends the JavaScript a page actually needs, keeping initial load times fast.
-  </Card>
-</CardGroup>
+Next.js layers a set of production-ready features directly on top of React, so you spend your time building rather than configuring:
+
+- **File-based routing.** Create a file in the `app/` directory and it becomes a route. No router configuration required.
+- **Server rendering.** Pages are rendered on the server, improving performance and making your app indexable by search engines.
+- **API routes.** Write backend API endpoints inside the same project — no separate server needed.
+- **Image optimisation.** The built-in `<Image>` component automatically resizes, compresses, and lazy-loads images.
+- **Built-in CSS support.** CSS Modules, Tailwind CSS, and CSS-in-JS solutions all work out of the box with zero config.
+- **Automatic code splitting.** Next.js only sends the JavaScript a page actually needs, keeping initial load times fast.
 
 ## The App Router: The Modern Way to Build
 
@@ -74,7 +62,7 @@ This adoption means a thriving ecosystem: abundant tutorials, active community f
 
 One of the most compelling things about Next.js is that it collapses the traditional separation between frontend and backend into a single, cohesive codebase.
 
-```
+```text
 my-app/
 ├── app/
 │   ├── page.tsx          ← Your homepage (frontend)

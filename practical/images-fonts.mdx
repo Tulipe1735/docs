@@ -1,5 +1,5 @@
 ---
-title: "Optimized Images & Fonts in Next.js"
+title: "Optimizing Images and Fonts in the Next.js App Router"
 sidebarTitle: "Images & Fonts"
 description: "Use Next.js built-in Image and Font components to automatically optimize images, eliminate layout shift, and self-host Google Fonts with no extra setup."
 ---
@@ -27,13 +27,13 @@ export function HeroSection() {
 ```
 
 <CardGroup cols={3}>
-  <Card title="Lazy Loading" icon="eye-slash">
+  <Card title="Lazy Loading" icon="eye-slash" href="/practical/images-fonts">
     Images below the fold are only loaded when the user scrolls near them — saving bandwidth automatically.
   </Card>
-  <Card title="Modern Formats" icon="file-image">
+  <Card title="Modern Formats" icon="file-image" href="/practical/images-fonts">
     Next.js converts images to WebP or AVIF on the fly, cutting file sizes by 30–50% without any extra work.
   </Card>
-  <Card title="No Layout Shift" icon="table-columns">
+  <Card title="No Layout Shift" icon="table-columns" href="/practical/images-fonts">
     Because you provide `width` and `height`, the browser reserves space upfront and the page never jumps.
   </Card>
 </CardGroup>
@@ -98,13 +98,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 ```
 
 <CardGroup cols={3}>
-  <Card title="No FOUT" icon="font">
+  <Card title="No FOUT" icon="font" href="/practical/images-fonts">
     Fonts are available immediately on load — no flash of unstyled text on first visit.
   </Card>
-  <Card title="Self-Hosted" icon="server">
+  <Card title="Self-Hosted" icon="server" href="/practical/images-fonts">
     Font files are served from your own domain, so there are zero external network requests.
   </Card>
-  <Card title="Privacy-Friendly" icon="shield">
+  <Card title="Privacy-Friendly" icon="shield" href="/practical/images-fonts">
     Because no request is made to Google's servers at runtime, no user data is shared.
   </Card>
 </CardGroup>

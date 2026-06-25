@@ -1,5 +1,5 @@
 ---
-title: "Server Components in Next.js App Router"
+title: "How Server Components Work in the Next.js App Router"
 sidebarTitle: "Server Components"
 description: "Learn how Server Components render on the server, shrink your JavaScript bundle, and give you direct access to databases and APIs."
 ---
@@ -24,16 +24,16 @@ Because Server Components never run in the browser, React doesn't ship their cod
 Server Components have capabilities that Client Components simply don't have access to, because they run in a trusted server environment.
 
 <CardGroup cols={2}>
-  <Card title="async / await" icon="clock">
+  <Card title="async / await" icon="clock" href="https://nextjs.org/docs/app/building-your-application/data-fetching/fetching">
     Mark any Server Component as `async` and use `await` directly inside it. Fetch from APIs, query databases, read files — all without useEffect or loading states.
   </Card>
-  <Card title="Environment Variables" icon="lock">
+  <Card title="Environment Variables" icon="lock" href="https://nextjs.org/docs/app/building-your-application/configuring/environment-variables">
     Access `process.env.SECRET_KEY` and other server-side environment variables safely. These values are never exposed to the browser.
   </Card>
-  <Card title="Direct Database Access" icon="database">
+  <Card title="Direct Database Access" icon="database" href="https://nextjs.org/docs/app/building-your-application/data-fetching/fetching#fetching-data-on-the-server-with-an-orm-or-database">
     Import your database client (Prisma, Drizzle, raw SQL) and run queries straight from the component. No need for a separate API layer just to load a page.
   </Card>
-  <Card title="Server-Only Packages" icon="server">
+  <Card title="Server-Only Packages" icon="server" href="https://nextjs.org/docs/app/building-your-application/rendering/composition-patterns#keeping-server-only-code-out-of-the-client-environment">
     Use Node.js APIs and heavy server-side libraries freely. They stay on the server and are excluded from the client bundle automatically.
   </Card>
 </CardGroup>

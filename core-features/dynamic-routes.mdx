@@ -1,5 +1,5 @@
 ---
-title: "Dynamic Routes in the Next.js App Router"
+title: "Dynamic Routes and URL Segments in the Next.js App Router"
 sidebarTitle: "Dynamic Routes"
 description: "Create pages that match dynamic URL segments like blog slugs and user IDs using bracket syntax, params props, and generateStaticParams."
 ---
@@ -10,7 +10,7 @@ Dynamic routes let you create a single page file that handles an infinite number
 
 Wrap a folder name in square brackets to mark it as a dynamic segment. Next.js treats anything inside those brackets as a variable that can match any value in that URL position.
 
-```
+```text
 app/
 └── blog/
     ├── page.tsx           →  /blog
@@ -93,7 +93,7 @@ Next.js calls `generateStaticParams` at build time, receives the array of `{ slu
 
 Sometimes you need to match a variable number of URL segments — a documentation site with nested paths, for example. Use `[...slug]` (three dots before the name) to create a catch-all route.
 
-```
+```text
 app/
 └── docs/
     └── [...slug]/

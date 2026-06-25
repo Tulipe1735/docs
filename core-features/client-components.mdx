@@ -1,5 +1,5 @@
 ---
-title: "Client Components in Next.js App Router"
+title: "Adding Interactivity with Client Components in Next.js"
 sidebarTitle: "Client Components"
 description: "Add interactivity to your Next.js app with Client Components — use state, effects, event handlers, and browser APIs with the use client directive."
 ---
@@ -36,16 +36,16 @@ export function Counter() {
 Reach for a Client Component when your component needs any of the following:
 
 <CardGroup cols={2}>
-  <Card title="State & Reducers" icon="sliders">
+  <Card title="State & Reducers" icon="sliders" href="https://nextjs.org/docs/app/building-your-application/rendering/client-components#benefits-of-client-rendering">
     `useState`, `useReducer` — anything that changes over time in response to user actions.
   </Card>
-  <Card title="Side Effects" icon="arrow-right-arrow-left">
+  <Card title="Side Effects" icon="arrow-right-arrow-left" href="https://react.dev/reference/react/useEffect">
     `useEffect` and `useLayoutEffect` for subscriptions, timers, or syncing with external systems after render.
   </Card>
-  <Card title="Event Handlers" icon="computer-mouse">
+  <Card title="Event Handlers" icon="computer-mouse" href="https://react.dev/learn/responding-to-events">
     `onClick`, `onChange`, `onSubmit` — any interaction that the user triggers directly.
   </Card>
-  <Card title="Browser APIs" icon="window-restore">
+  <Card title="Browser APIs" icon="window-restore" href="https://nextjs.org/docs/app/building-your-application/rendering/composition-patterns#using-client-components">
     `window`, `document`, `localStorage`, `navigator`, `IntersectionObserver`, and other web platform APIs.
   </Card>
 </CardGroup>
@@ -79,8 +79,8 @@ export default function HomePage() {
 When a Client Component needs to wrap server-rendered content, pass it as `children`:
 
 ```tsx
-// components/Modal.tsx (Client Component)
 'use client'
+// components/Modal.tsx (Client Component)
 
 import { useState } from 'react'
 
@@ -122,8 +122,8 @@ export default async function Page() {
 A practical example — instead of marking an entire page client-side just for one interactive element:
 
 ```tsx
-// ❌ Avoid — the whole page becomes a Client Component
 'use client'
+// ❌ Avoid — the whole page becomes a Client Component
 import { useState } from 'react'
 
 export default function BlogPost() {
@@ -135,9 +135,9 @@ export default function BlogPost() {
 Extract only the interactive piece:
 
 ```tsx
+'use client'
 // ✅ Better — only the button is a Client Component
 // components/LikeButton.tsx
-'use client'
 import { useState } from 'react'
 
 export function LikeButton() {

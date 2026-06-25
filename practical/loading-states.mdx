@@ -1,5 +1,5 @@
 ---
-title: "Loading States & Suspense in Next.js"
+title: "Loading States and React Suspense in Next.js App Router"
 sidebarTitle: "Loading States"
 description: "Display instant loading UI while pages fetch data using loading.tsx, build skeleton screens, and use React Suspense to stream page sections independently."
 ---
@@ -72,10 +72,10 @@ export default function BlogPage() {
 Here the `<h1>Blog</h1>` heading renders instantly, while only the `<PostList>` component — which fetches data — shows the fallback until it's ready.
 
 <CardGroup cols={2}>
-  <Card title="loading.tsx" icon="file">
+  <Card title="loading.tsx" icon="file" href="/practical/loading-states">
     Covers the whole route segment. Great for full-page loading states. Zero configuration.
   </Card>
-  <Card title="Suspense" icon="layer-group">
+  <Card title="Suspense" icon="layer-group" href="/practical/loading-states">
     Wraps individual components. Lets different sections of a page load independently.
   </Card>
 </CardGroup>

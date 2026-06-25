@@ -1,7 +1,7 @@
 ---
-title: "Understanding Your Next.js Project Structure"
+title: "Next.js Project Structure: Files and Folders Explained"
 sidebarTitle: "Project Structure"
-description: "Learn what every file and folder in a new Next.js project does, and why the app/ directory is the heart of the App Router."
+description: "Learn what every file and folder in a freshly created Next.js project does, and why the app/ directory is the heart of the App Router."
 ---
 
 When you run `create-next-app`, Next.js scaffolds a project with a carefully chosen set of files and folders. Each piece has a specific purpose, and understanding the layout from the start will save you a lot of confusion as your project grows.
@@ -80,16 +80,16 @@ The **Tailwind CSS configuration** file. It tells Tailwind which files to scan f
 ## How It All Fits Together
 
 <CardGroup cols={2}>
-  <Card title="app/" icon="folder-open">
+  <Card title="app/ Directory" icon="folder-open" href="foundations/pages-routing">
     Your routes, layouts, and pages live here. The App Router turns this folder into your entire navigation system.
   </Card>
-  <Card title="public/" icon="image">
+  <Card title="public/ Directory" icon="image" href="foundations/project-structure">
     Static files served as-is. Drop an image here and reference it anywhere in your app.
   </Card>
-  <Card title="next.config.js" icon="gear">
+  <Card title="next.config.js" icon="gear" href="foundations/project-structure">
     The control panel for Next.js. Tweak build behavior, set up redirects, and enable experimental features.
   </Card>
-  <Card title="tsconfig.json" icon="code">
+  <Card title="tsconfig.json" icon="code" href="foundations/project-structure">
     TypeScript settings including the handy `@/` import alias that keeps your imports clean.
   </Card>
 </CardGroup>

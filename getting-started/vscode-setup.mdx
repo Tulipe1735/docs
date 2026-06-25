@@ -1,7 +1,7 @@
 ---
-title: "Setting Up VS Code for Next.js Development"
+title: "VS Code Setup and Extensions for Next.js Development"
 sidebarTitle: "VS Code Setup"
-description: "Configure Visual Studio Code with the right extensions and settings for a smooth Next.js workflow, including Prettier, ESLint, and Tailwind IntelliSense."
+description: "Configure Visual Studio Code with the right extensions and settings for Next.js, including Prettier, ESLint, and Tailwind CSS IntelliSense."
 ---
 
 A good code editor doesn't just display text — it catches your mistakes, formats your code automatically, and gives you intelligent suggestions as you type. Visual Studio Code (VS Code) is the most popular editor in the web development world, and it has exceptional support for JavaScript, TypeScript, and React. Setting it up correctly from the start will save you hours of frustration down the road.
@@ -21,23 +21,23 @@ Run the installer and follow the prompts. On Windows, check the option to **"Add
 Extensions are plugins that add functionality to VS Code. Install these to get the best Next.js development experience:
 
 <CardGroup cols={2}>
-  <Card title="ES7+ React/Redux Snippets" icon="bolt">
+  <Card title="ES7+ React/Redux Snippets" icon="bolt" href="https://marketplace.visualstudio.com/items?itemName=dsznajder.es7-react-js-snippets">
     Provides shorthand shortcuts for creating React components, hooks, and more. Type `rafce` and press Tab to generate a full component in seconds.
   </Card>
-  <Card title="Prettier – Code Formatter" icon="wand-magic-sparkles">
+  <Card title="Prettier – Code Formatter" icon="wand-magic-sparkles" href="https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode">
     Automatically formats your code every time you save. Keeps your files clean and consistent without any manual effort.
   </Card>
-  <Card title="ESLint" icon="triangle-exclamation">
+  <Card title="ESLint" icon="triangle-exclamation" href="https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint">
     Highlights code quality issues and potential bugs as you write. Next.js comes with ESLint pre-configured, and this extension surfaces those warnings directly in your editor.
   </Card>
-  <Card title="Tailwind CSS IntelliSense" icon="palette">
+  <Card title="Tailwind CSS IntelliSense" icon="palette" href="https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss">
     Provides autocomplete, syntax highlighting, and hover previews for Tailwind CSS class names. Highly recommended if you're using Tailwind (and this course does).
   </Card>
-  <Card title="Auto Rename Tag" icon="tags">
+  <Card title="Auto Rename Tag" icon="tags" href="https://marketplace.visualstudio.com/items?itemName=formulahendry.auto-rename-tag">
     When you rename an opening HTML or JSX tag, the matching closing tag updates automatically. Small but saves a surprising amount of time.
   </Card>
-  <Card title="TypeScript (Built-in)" icon="code">
-    VS Code ships with built-in TypeScript support. No extension needed — it just works with your `.tsx` files.
+  <Card title="GitLens — Git Supercharged" icon="code-branch" href="https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens">
+    Adds inline Git blame annotations, commit history, and branch comparisons right inside VS Code. Invaluable once you start working with Git.
   </Card>
 </CardGroup>
 
